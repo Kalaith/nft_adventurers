@@ -10,8 +10,11 @@ pub struct MissionTypeData {
     pub description: String,
     pub duration_seconds: u64,
     pub permadeath_chance: f32,
-    pub reward_multiplier: f32,
     pub difficulty_class: u32,
+    pub cost_gold: u32,
+    pub reward_gold: u32,
+    pub reward_lumber: u32,
+    pub reward_stone: u32,
     pub icon_key: String,
 }
 
@@ -25,6 +28,8 @@ pub struct ItemTypeData {
     pub base_damage: Option<u32>,
     pub base_defense: Option<u32>,
     pub base_healing: Option<u32>,
+    #[serde(default)]
+    pub cost: u32,
 }
 
 /// Class type data loaded from backend.
@@ -53,6 +58,8 @@ pub struct ConsumableTypeData {
     pub icon_key: String,
     pub effect_type: String,
     pub effect_value: f32,
+    #[serde(default)]
+    pub cost: u32,
 }
 
 /// Building type data loaded from backend.
@@ -63,4 +70,8 @@ pub struct BuildingTypeData {
     pub description: String,
     pub icon_key: String,
     pub xp_bonus_per_level: f32,
+    pub base_cost_gold: u32,
+    pub base_cost_lumber: u32,
+    pub base_cost_stone: u32,
+    pub cost_scaling: f32,
 }

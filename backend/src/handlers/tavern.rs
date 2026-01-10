@@ -97,6 +97,17 @@ pub async fn recruit_adventurer(
         stats.cha += 1;
     }
 
+    // Check cost (recruit cost is in class_data.cost)
+    if class_data.cost > 0 {
+         if let Err(_) = queries::spend_resources(pool, &request.wallet_address, class_data.cost, 0, 0).await {
+            return Json(RecruitResponse {
+                success: false,
+                message: format!("Insufficient gold. Need {} gold.", class_data.cost),
+                adventurer_id: None,
+            });
+        }
+    }
+
     // 4. Create Adventurer
     match queries::create_adventurer(pool, &request.wallet_address, &request.name, &class_key, stats).await {
         Ok(adv) => Json(RecruitResponse {

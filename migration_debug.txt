@@ -1,0 +1,84 @@
+   Compiling backend v0.1.0 (H:\RustGames\nft_adventurers\backend)
+warning: unused imports: `Json` and `extract::State`
+ --> backend\src\main.rs:6:5
+  |
+6 |     extract::State,
+  |     ^^^^^^^^^^^^^^
+7 |     routing::{get, post},
+8 |     Json, Router,
+  |     ^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `add_consumable` is never used
+   --> backend\src\db\queries.rs:382:14
+    |
+382 | pub async fn add_consumable(
+    |              ^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: struct `SuffixRule` is never constructed
+ --> backend\src\engine\feat_generator.rs:8:8
+  |
+8 | struct SuffixRule {
+  |        ^^^^^^^^^^
+
+warning: struct `FeatConfig` is never constructed
+  --> backend\src\engine\feat_generator.rs:14:8
+   |
+14 | struct FeatConfig {
+   |        ^^^^^^^^^^
+
+warning: static `CONFIG` is never used
+  --> backend\src\engine\feat_generator.rs:22:8
+   |
+22 | static CONFIG: OnceLock<FeatConfig> = OnceLock::new();
+   |        ^^^^^^
+
+warning: function `get_config` is never used
+  --> backend\src\engine\feat_generator.rs:24:4
+   |
+24 | fn get_config() -> &'static FeatConfig {
+   |    ^^^^^^^^^^
+
+warning: function `get_prefix` is never used
+  --> backend\src\engine\feat_generator.rs:32:4
+   |
+32 | fn get_prefix(enemy_type: &str) -> String {
+   |    ^^^^^^^^^^
+
+warning: function `get_suffix` is never used
+  --> backend\src\engine\feat_generator.rs:41:4
+   |
+41 | fn get_suffix(kill_count: u32) -> String {
+   |    ^^^^^^^^^^
+
+warning: function `generate_feat_name` is never used
+  --> backend\src\engine\feat_generator.rs:52:8
+   |
+52 | pub fn generate_feat_name(enemy_type: &str, kill_count: u32) -> String {
+   |        ^^^^^^^^^^^^^^^^^^
+
+warning: function `generate_feat_bonuses` is never used
+  --> backend\src\engine\feat_generator.rs:57:8
+   |
+57 | pub fn generate_feat_bonuses(enemy_type: &str, kill_count: u32) -> FeatBonuses {
+   |        ^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `generate_kill_feat` is never used
+  --> backend\src\engine\feat_generator.rs:69:8
+   |
+69 | pub fn generate_kill_feat(
+   |        ^^^^^^^^^^^^^^^^^^
+
+warning: `backend` (bin "backend") generated 11 warnings (run `cargo fix --bin "backend" -p backend` to apply 1 suggestion)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 4.00s
+     Running `target\debug\backend.exe`
+NFT Adventurers Backend starting...
+Database connected: sqlite:nft_adventurers.db
+
+thread 'main' (33700) panicked at backend\src\main.rs:33:10:
+Failed to connect to database: Database(SqliteError { code: 1, message: "table mission_types has no column named cost_gold" })
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+error: process didn't exit successfully: `target\debug\backend.exe` (exit code: 101)

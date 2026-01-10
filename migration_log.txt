@@ -1,0 +1,6 @@
+NFT Adventurers Backend starting...
+Database connected: sqlite:nft_adventurers.db
+
+thread 'main' (3696) panicked at backend\src\main.rs:33:10:
+Failed to connect to database: Database(SqliteError { code: 1, message: "table mission_types has no column named cost_gold" })
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace

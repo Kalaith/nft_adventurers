@@ -71,6 +71,22 @@ pub async fn upgrade_building(
 
     let new_level = current_level + 1;
 
+    // Check cost
+    if let Some(building_data) = queries::get_building_type_data(pool, &building_key).await.unwrap_or(None) {
+        let scaling_factor = building_data.cost_scaling.powi(current_level as i32);
+        let gold_cost = (building_data.base_cost_gold as f32 * scaling_factor) as u32;
+        let lumber_cost = (building_data.base_cost_lumber as f32 * scaling_factor) as u32;
+        let stone_cost = (building_data.base_cost_stone as f32 * scaling_factor) as u32;
+
+        if let Err(_) = queries::spend_resources(pool, &request.wallet_address, gold_cost, lumber_cost, stone_cost).await {
+             return Json(UpgradeBuildingResponse {
+                success: false,
+                message: format!("Insufficient resources. Need {} gold, {} lumber, {} stone.", gold_cost, lumber_cost, stone_cost),
+                new_level: current_level,
+            });
+        }
+    }
+
     // Update building level in database
     match queries::upgrade_building(pool, &request.wallet_address, &building_key, new_level).await {
         Ok(_) => {
@@ -153,6 +169,17 @@ pub async fn unlock_skill(
         return Json(UnlockSkillResponse {
             success: false,
             message: format!("Must unlock tier {} skills first", skill_node.tier - 1),
+        });
+    }
+
+    // Check cost (assume flat 100 gold per skill for now, or use class type data if we had skill costs there)
+    // Actually, let's use a flat fee for skills or check class_type if pertinent.
+    // For now: 50 Gold * Tier
+    let cost = 50 * skill_node.tier;
+    if let Err(_) = queries::spend_resources(pool, &request.wallet_address, cost, 0, 0).await {
+          return Json(UnlockSkillResponse {
+            success: false,
+            message: format!("Insufficient gold. Need {} gold.", cost),
         });
     }
 

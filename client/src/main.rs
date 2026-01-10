@@ -5,7 +5,9 @@
 use macroquad::prelude::*;
 
 mod api;
+mod data;
 mod game;
+mod identity;
 mod state;
 mod ui;
 
@@ -26,7 +28,7 @@ async fn main() {
     let mut game = Game::new().await;
 
     loop {
-        game.update();
+        game.update().await;
         game.draw();  // Now takes &mut self
         next_frame().await;
     }

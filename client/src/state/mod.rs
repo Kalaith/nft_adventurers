@@ -6,12 +6,14 @@ pub enum GameState {
     MainMenu,
     Connecting,
     Hold,
-    HoldUpgrades,
+    HoldUpgrades { scroll: f32 },
     Skills { adventurer_id: String },
     MissionSelect,
     Inventory,
     AdventurerDetail { adventurer_id: String },
     Recruit,
+    Smithy,
+    Market,
 }
 
 /// State transitions.

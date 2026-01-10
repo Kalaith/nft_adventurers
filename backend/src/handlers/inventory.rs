@@ -5,9 +5,11 @@ use serde::{Deserialize, Serialize};
 use std::sync::Arc;
 use uuid::Uuid;
 
+// ... imports ...
 use crate::db::queries;
 use crate::AppState;
 use shared::EquipSlot;
+use sqlx::Row;
 
 /// Request for equipping an item.
 #[derive(Debug, Deserialize)]
@@ -32,6 +34,43 @@ pub struct InventoryResponse {
     pub message: String,
 }
 
+/// Helper to check if adventurer is owned by wallet and available (not on mission).
+async fn check_adventurer_availability(
+    pool: &sqlx::SqlitePool,
+    adventurer_id: Uuid,
+    wallet: &str,
+) -> Result<(), StatusCode> {
+    let row = sqlx::query("SELECT owner, status FROM adventurers WHERE id = ?")
+        .bind(adventurer_id.to_string())
+        .fetch_optional(pool)
+        .await
+        .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
+
+    let (owner, status) = match row {
+        Some(row) => (
+            row.get::<String, _>("owner"),
+            row.get::<String, _>("status"),
+        ),
+        None => return Err(StatusCode::NOT_FOUND),
+    };
+
+    if owner != wallet {
+        return Err(StatusCode::FORBIDDEN);
+    }
+
+    if status.starts_with("on_mission") {
+        return Err(StatusCode::BAD_REQUEST);
+    }
+    
+    // Dead adventurers also probably shouldn't mess with gear, but "on_mission" was the specific report.
+    // Let's block dead too.
+    if status == "dead" {
+        return Err(StatusCode::BAD_REQUEST);
+    }
+
+    Ok(())
+}
+
 /// Equip an item to an adventurer.
 pub async fn equip_item(
     State(state): State<Arc<AppState>>,
@@ -41,6 +80,20 @@ pub async fn equip_item(
 
     let adventurer_id = Uuid::parse_str(&request.adventurer_id)
         .map_err(|_| StatusCode::BAD_REQUEST)?;
+    
+    // Check availability
+    if let Err(code) = check_adventurer_availability(pool, adventurer_id, &request.wallet_address).await {
+        return Ok(Json(InventoryResponse {
+            success: false,
+            message: match code {
+                StatusCode::NOT_FOUND => "Adventurer not found".to_string(),
+                StatusCode::FORBIDDEN => "Not your adventurer".to_string(),
+                StatusCode::BAD_REQUEST => "Adventurer is busy or dead".to_string(),
+                _ => "Internal error".to_string(),
+            },
+        }));
+    }
+
     let item_id = Uuid::parse_str(&request.item_id)
         .map_err(|_| StatusCode::BAD_REQUEST)?;
 
@@ -85,6 +138,19 @@ pub async fn unequip_item(
 
     let adventurer_id = Uuid::parse_str(&request.adventurer_id)
         .map_err(|_| StatusCode::BAD_REQUEST)?;
+
+    // Check availability
+    if let Err(code) = check_adventurer_availability(pool, adventurer_id, &request.wallet_address).await {
+         return Ok(Json(InventoryResponse {
+            success: false,
+            message: match code {
+                StatusCode::NOT_FOUND => "Adventurer not found".to_string(),
+                StatusCode::FORBIDDEN => "Not your adventurer".to_string(),
+                StatusCode::BAD_REQUEST => "Adventurer is busy or dead".to_string(),
+                _ => "Internal error".to_string(),
+            },
+        }));
+    }
 
     let slot = match request.slot.to_lowercase().as_str() {
         "weapon" => EquipSlot::Weapon,

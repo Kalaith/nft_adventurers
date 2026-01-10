@@ -83,6 +83,16 @@ pub fn draw(
         draw_text(mission_type.display_name(), 150.0, y + 20.0, 18.0, dark::TEXT_BRIGHT);
         draw_text(mission_type.description(), 150.0, y + 40.0, 14.0, dark::TEXT_DIM);
 
+        // Hardcoded costs/rewards for display
+        let (cost, reward) = match mission_type {
+            shared::MissionType::QuickSkirmish => ("Free", "Reward: 10G, 5L"),
+            shared::MissionType::DungeonCrawl => ("Cost: 20G", "Reward: 50G, 20L, 10S"),
+            shared::MissionType::BossRaid => ("Cost: 100G", "Reward: 500G, 100L, 50S"),
+        };
+        
+        draw_text(cost, 150.0, y + 58.0, 14.0, if cost == "Free" { dark::POSITIVE } else { Color::new(1.0, 0.8, 0.2, 1.0) });
+        draw_text(reward, 250.0, y + 58.0, 14.0, dark::ACCENT);
+
         if can_start {
             if macroquad_toolkit::ui::button(350.0, y + 15.0, 80.0, 28.0, "Go") {
                 if let Some(adv_id) = selected_adventurer {

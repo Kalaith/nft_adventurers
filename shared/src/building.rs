@@ -21,6 +21,12 @@ pub struct Hold {
     pub buildings: HashMap<String, u32>,
     pub echoes: Vec<Echo>,
     pub total_feats: u32,
+    #[serde(default)]
+    pub gold: u32,
+    #[serde(default)]
+    pub lumber: u32,
+    #[serde(default)]
+    pub stone: u32,
 }
 
 impl Hold {
@@ -34,6 +40,9 @@ impl Hold {
             buildings,
             echoes: Vec::new(),
             total_feats: 0,
+            gold: 100,
+            lumber: 50,
+            stone: 0,
         }
     }
 

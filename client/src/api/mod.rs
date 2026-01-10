@@ -420,8 +420,107 @@ pub struct ClassTypesResponse {
     pub class_types: Vec<shared::ClassTypeData>,
 }
 
+/// Building types response.
+#[derive(Debug, Clone, Deserialize)]
+pub struct BuildingTypesResponse {
+    pub building_types: Vec<shared::BuildingTypeData>,
+}
+
 impl Default for ApiClient {
     fn default() -> Self {
         Self::new()
     }
+}
+
+impl ApiClient {
+    /// Get building types from backend.
+    pub fn get_building_types(&self) -> Result<Vec<shared::BuildingTypeData>, String> {
+        let url = format!("{}/api/game/building-types", self.base_url);
+        match ureq::get(&url).call() {
+            Ok(response) => {
+                let resp: BuildingTypesResponse = response
+                    .into_json()
+                    .map_err(|e| format!("Parse error: {}", e))?;
+                Ok(resp.building_types)
+            }
+            Err(e) => Err(format!("Request failed: {}", e)),
+        }
+    }
+
+    /// Buy an item from the Smithy.
+    pub fn buy_item(&self, item_type: &str) -> Result<MarketResponse, String> {
+        let wallet = self.wallet_address.as_ref().ok_or("Not authenticated")?;
+        let url = format!("{}/api/market/buy-item", self.base_url);
+        
+        let request = BuyItemRequest {
+            wallet_address: wallet.clone(),
+            item_type: item_type.to_string(),
+        };
+
+        match ureq::post(&url).send_json(&request) {
+            Ok(response) => response
+                .into_json()
+                .map_err(|e| format!("Parse error: {}", e)),
+            Err(e) => Err(format!("Request failed: {}", e)),
+        }
+    }
+
+    /// Buy a consumable from the Market.
+    pub fn buy_consumable(&self, consumable_type: &str) -> Result<MarketResponse, String> {
+        let wallet = self.wallet_address.as_ref().ok_or("Not authenticated")?;
+        let url = format!("{}/api/market/buy-consumable", self.base_url);
+        
+        let request = BuyConsumableRequest {
+            wallet_address: wallet.clone(),
+            consumable_type: consumable_type.to_string(),
+        };
+
+        match ureq::post(&url).send_json(&request) {
+            Ok(response) => response
+                .into_json()
+                .map_err(|e| format!("Parse error: {}", e)),
+            Err(e) => Err(format!("Request failed: {}", e)),
+        }
+    }
+
+    /// Get consumable types from backend.
+    pub fn get_consumable_types(&self) -> Result<Vec<shared::ConsumableTypeData>, String> {
+        let url = format!("{}/api/game/consumable-types", self.base_url);
+        match ureq::get(&url).call() {
+            Ok(response) => {
+                let resp: ConsumableTypesResponse = response
+                    .into_json()
+                    .map_err(|e| format!("Parse error: {}", e))?;
+                Ok(resp.consumable_types)
+            }
+            Err(e) => Err(format!("Request failed: {}", e)),
+        }
+    }
+}
+
+/// Buy item request.
+#[derive(Debug, Serialize)]
+pub struct BuyItemRequest {
+    pub wallet_address: String,
+    pub item_type: String,
+}
+
+/// Buy consumable request.
+#[derive(Debug, Serialize)]
+pub struct BuyConsumableRequest {
+    pub wallet_address: String,
+    pub consumable_type: String,
+}
+
+/// Generic market action response.
+#[derive(Debug, Clone, Deserialize)]
+pub struct MarketResponse {
+    pub success: bool,
+    pub message: String,
+}
+
+/// Consumable types response.
+#[derive(Debug, Clone, Deserialize)]
+pub struct ConsumableTypesResponse {
+    pub consumable_types: Vec<shared::ConsumableTypeData>,
 }

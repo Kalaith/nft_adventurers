@@ -69,6 +69,8 @@ fn api_routes() -> Router<Arc<AppState>> {
         .route("/skill/unlock", post(handlers::hold::unlock_skill))
         .route("/inventory/equip", post(handlers::inventory::equip_item))
         .route("/inventory/unequip", post(handlers::inventory::unequip_item))
+        .route("/market/buy-item", post(handlers::market::buy_item))
+        .route("/market/buy-consumable", post(handlers::market::buy_consumable))
         .route("/game/mission-types", get(handlers::game_data::get_mission_types))
         .route("/game/item-types", get(handlers::game_data::get_item_types))
         .route("/game/class-types", get(handlers::game_data::get_class_types))

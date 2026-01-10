@@ -111,7 +111,23 @@ pub async fn start_mission(
         }
     }
 
+    // Check mission cost
+    if let Some(mission_data) = queries::get_mission_type_data(pool, &request.mission_type).await.unwrap_or(None) {
+        if mission_data.cost_gold > 0 {
+            if let Err(_) = queries::spend_resources(pool, &request.wallet_address, mission_data.cost_gold, 0, 0).await {
+                return Json(StartMissionResponse {
+                    success: false,
+                    mission_id: None,
+                    message: format!("Insufficient gold. Need {} gold.", mission_data.cost_gold),
+                    duration_seconds: None,
+                });
+            }
+        }
+    }
+
     // Create the mission
+    // Note: If create_mission fails, we should ideally refund, but for simplicity we assume it works if validations pass.
+    // In a production system, this should be in a transaction.
     match missions::create_mission(pool, &request.wallet_address, mission_type, &party).await {
         Ok(mission) => {
             println!(
@@ -228,6 +244,19 @@ pub async fn resolve_mission(
                 feats_earned.push(feat_name);
             }
         }
+    }
+
+    // Award resources if successful
+    if result.success {
+         if let Some(mission_data) = queries::get_mission_type_data(pool, mission.mission_type.type_key()).await.unwrap_or(None) {
+            queries::add_resources(
+                pool, 
+                &request.wallet_address, 
+                mission_data.reward_gold, 
+                mission_data.reward_lumber, 
+                mission_data.reward_stone
+            ).await.ok();
+         }
     }
 
     // Handle deaths

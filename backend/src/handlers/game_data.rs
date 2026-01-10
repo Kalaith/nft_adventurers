@@ -64,6 +64,7 @@ pub struct ItemTypeData {
     pub base_damage: Option<u32>,
     pub base_defense: Option<u32>,
     pub base_healing: Option<u32>,
+    pub cost: u32,
 }
 
 /// Response containing all item types.
@@ -77,7 +78,7 @@ pub async fn get_item_types(
     State(state): State<Arc<AppState>>,
 ) -> Json<ItemTypesResponse> {
     let rows = sqlx::query(
-        r#"SELECT type_key, display_name, icon_key, equip_slot, base_damage, base_defense, base_healing FROM item_types"#
+        r#"SELECT type_key, display_name, icon_key, equip_slot, base_damage, base_defense, base_healing, cost FROM item_types"#
     )
     .fetch_all(&state.db.pool)
     .await
@@ -93,6 +94,7 @@ pub async fn get_item_types(
             base_damage: row.get::<Option<i64>, _>("base_damage").map(|v| v as u32),
             base_defense: row.get::<Option<i64>, _>("base_defense").map(|v| v as u32),
             base_healing: row.get::<Option<i64>, _>("base_healing").map(|v| v as u32),
+            cost: row.get::<i64, _>("cost") as u32,
         })
         .collect();
 
@@ -160,6 +162,7 @@ pub struct ConsumableTypeData {
     pub icon_key: String,
     pub effect_type: String,
     pub effect_value: f32,
+    pub cost: u32,
 }
 
 #[derive(Debug, Serialize)]
@@ -171,7 +174,7 @@ pub async fn get_consumable_types(
     State(state): State<Arc<AppState>>,
 ) -> Json<ConsumableTypesResponse> {
     let rows = sqlx::query(
-        r#"SELECT type_key, display_name, description, icon_key, effect_type, effect_value FROM consumable_types"#
+        r#"SELECT type_key, display_name, description, icon_key, effect_type, effect_value, cost FROM consumable_types"#
     )
     .fetch_all(&state.db.pool)
     .await
@@ -186,6 +189,7 @@ pub async fn get_consumable_types(
             icon_key: row.get("icon_key"),
             effect_type: row.get("effect_type"),
             effect_value: row.get::<f64, _>("effect_value") as f32,
+            cost: row.get::<i64, _>("cost") as u32,
         })
         .collect();
 
@@ -201,6 +205,10 @@ pub struct BuildingTypeData {
     pub description: String,
     pub icon_key: String,
     pub xp_bonus_per_level: f32,
+    pub base_cost_gold: u32,
+    pub base_cost_lumber: u32,
+    pub base_cost_stone: u32,
+    pub cost_scaling: f32,
 }
 
 #[derive(Debug, Serialize)]
@@ -212,7 +220,7 @@ pub async fn get_building_types(
     State(state): State<Arc<AppState>>,
 ) -> Json<BuildingTypesResponse> {
     let rows = sqlx::query(
-        r#"SELECT type_key, display_name, description, icon_key, xp_bonus_per_level FROM building_types"#
+        r#"SELECT type_key, display_name, description, icon_key, xp_bonus_per_level, base_cost_gold, base_cost_lumber, base_cost_stone, cost_scaling FROM building_types"#
     )
     .fetch_all(&state.db.pool)
     .await
@@ -226,6 +234,10 @@ pub async fn get_building_types(
             description: row.get("description"),
             icon_key: row.get("icon_key"),
             xp_bonus_per_level: row.get::<f64, _>("xp_bonus_per_level") as f32,
+            base_cost_gold: row.get::<i64, _>("base_cost_gold") as u32,
+            base_cost_lumber: row.get::<i64, _>("base_cost_lumber") as u32,
+            base_cost_stone: row.get::<i64, _>("base_cost_stone") as u32,
+            cost_scaling: row.get::<f64, _>("cost_scaling") as f32,
         })
         .collect();
 

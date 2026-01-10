@@ -437,11 +437,13 @@ name = "client"
 version = "0.1.0"
 dependencies = [
  "chrono",
+ "ethers",
  "macroquad",
  "macroquad-toolkit",
  "serde",
  "serde_json",
  "shared",
+ "tokio",
  "ureq",
  "uuid 1.19.0",
 ]

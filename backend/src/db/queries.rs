@@ -219,15 +219,15 @@ pub async fn create_item(
 
 /// Get player's hold.
 pub async fn get_hold(pool: &SqlitePool, wallet: &str) -> Result<Hold, sqlx::Error> {
-    let row: Option<(String, String, i64)> = sqlx::query_as(
-        "SELECT buildings, echoes, total_feats FROM holds WHERE player = ?",
+    let row: Option<(String, String, i64, i64, i64, i64)> = sqlx::query_as(
+        "SELECT buildings, echoes, total_feats, gold, lumber, stone FROM holds WHERE player = ?",
     )
     .bind(wallet)
     .fetch_optional(pool)
     .await?;
 
     match row {
-        Some((buildings_json, echoes_json, total_feats)) => {
+        Some((buildings_json, echoes_json, total_feats, gold, lumber, stone)) => {
             let buildings: HashMap<String, u32> =
                 serde_json::from_str(&buildings_json).unwrap_or_default();
             let echoes = serde_json::from_str(&echoes_json).unwrap_or_default();
@@ -237,10 +237,64 @@ pub async fn get_hold(pool: &SqlitePool, wallet: &str) -> Result<Hold, sqlx::Err
                 buildings,
                 echoes,
                 total_feats: total_feats as u32,
+                gold: gold as u32,
+                lumber: lumber as u32,
+                stone: stone as u32,
             })
         }
         None => Ok(Hold::new(wallet.to_string())),
     }
+}
+
+/// Spend resources from a player's hold.
+pub async fn spend_resources(
+    pool: &SqlitePool,
+    wallet: &str,
+    gold: u32,
+    lumber: u32,
+    stone: u32,
+) -> Result<(), sqlx::Error> {
+    // We update only if they have enough. SQLITE check constraints could also work,
+    // but returning affected rows is easier for logic control.
+    let result = sqlx::query(
+        "UPDATE holds SET gold = gold - ?, lumber = lumber - ?, stone = stone - ? WHERE player = ? AND gold >= ? AND lumber >= ? AND stone >= ?"
+    )
+    .bind(gold as i64)
+    .bind(lumber as i64)
+    .bind(stone as i64)
+    .bind(wallet)
+    .bind(gold as i64)
+    .bind(lumber as i64)
+    .bind(stone as i64)
+    .execute(pool)
+    .await?;
+
+    if result.rows_affected() == 0 {
+        return Err(sqlx::Error::RowNotFound); // Treat insufficient funds as "row not found" (conditionally) for now or define custom error
+    }
+
+    Ok(())
+}
+
+/// Add resources to a player's hold.
+pub async fn add_resources(
+    pool: &SqlitePool,
+    wallet: &str,
+    gold: u32,
+    lumber: u32,
+    stone: u32,
+) -> Result<(), sqlx::Error> {
+    sqlx::query(
+        "UPDATE holds SET gold = gold + ?, lumber = lumber + ?, stone = stone + ? WHERE player = ?"
+    )
+    .bind(gold as i64)
+    .bind(lumber as i64)
+    .bind(stone as i64)
+    .bind(wallet)
+    .execute(pool)
+    .await?;
+
+    Ok(())
 }
 
 /// Upgrade a building in the player's hold.
@@ -421,6 +475,62 @@ pub async fn get_class_type_data(
         base_cha: row.get::<i64, _>("base_cha") as u32,
         unlock_level: row.get::<i64, _>("unlock_level") as u32,
         cost: row.get::<i64, _>("cost") as u32,
+    }))
+}
+
+/// Get mission type data by key.
+pub async fn get_mission_type_data(
+    pool: &SqlitePool,
+    type_key: &str,
+) -> Result<Option<shared::MissionTypeData>, sqlx::Error> {
+    use sqlx::Row;
+    
+    let row = sqlx::query(
+        "SELECT type_key, display_name, description, duration_seconds, permadeath_chance, difficulty_class, cost_gold, reward_gold, reward_lumber, reward_stone, icon_key FROM mission_types WHERE type_key = ?"
+    )
+    .bind(type_key)
+    .fetch_optional(pool)
+    .await?;
+
+    Ok(row.map(|row| shared::MissionTypeData {
+        type_key: row.get("type_key"),
+        display_name: row.get("display_name"),
+        description: row.get("description"),
+        duration_seconds: row.get::<i64, _>("duration_seconds") as u64,
+        permadeath_chance: row.get("permadeath_chance"),
+        difficulty_class: row.get::<i64, _>("difficulty_class") as u32,
+        cost_gold: row.get::<i64, _>("cost_gold") as u32,
+        reward_gold: row.get::<i64, _>("reward_gold") as u32,
+        reward_lumber: row.get::<i64, _>("reward_lumber") as u32,
+        reward_stone: row.get::<i64, _>("reward_stone") as u32,
+        icon_key: row.get("icon_key"),
+    }))
+}
+
+/// Get building type data by key.
+pub async fn get_building_type_data(
+    pool: &SqlitePool,
+    type_key: &str,
+) -> Result<Option<shared::BuildingTypeData>, sqlx::Error> {
+    use sqlx::Row;
+    
+    let row = sqlx::query(
+        "SELECT type_key, display_name, description, icon_key, xp_bonus_per_level, base_cost_gold, base_cost_lumber, base_cost_stone, cost_scaling FROM building_types WHERE type_key = ?"
+    )
+    .bind(type_key)
+    .fetch_optional(pool)
+    .await?;
+
+    Ok(row.map(|row| shared::BuildingTypeData {
+        type_key: row.get("type_key"),
+        display_name: row.get("display_name"),
+        description: row.get("description"),
+        icon_key: row.get("icon_key"),
+        xp_bonus_per_level: row.get("xp_bonus_per_level"),
+        base_cost_gold: row.get::<i64, _>("base_cost_gold") as u32,
+        base_cost_lumber: row.get::<i64, _>("base_cost_lumber") as u32,
+        base_cost_stone: row.get::<i64, _>("base_cost_stone") as u32,
+        cost_scaling: row.get("cost_scaling"),
     }))
 }
 

@@ -14,3 +14,5 @@ macroquad-toolkit = { path = "../../macroquad-toolkit" }
 
 # HTTP client (works on both native and WASM via macroquad's fetch)
 ureq = { version = "2.9", features = ["json"] }
+ethers = { version = "2.0", features = ["rustls"] }
+tokio = { version = "1", features = ["rt", "macros"] }

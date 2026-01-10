@@ -1,0 +1,30 @@
+   Compiling backend v0.1.0 (H:\RustGames\nft_adventurers\backend)
+error[E0432]: unresolved import `shared::Class`
+  --> backend\src\engine\mission_resolver.rs:78:36
+   |
+78 |     use shared::{AdventurerStatus, Class, Stats};
+   |                                    ^^^^^ no `Class` in the root
+
+warning: unused imports: `Json` and `extract::State`
+ --> backend\src\main.rs:6:5
+  |
+6 |     extract::State,
+  |     ^^^^^^^^^^^^^^
+7 |     routing::{get, post},
+8 |     Json, Router,
+  |     ^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+error[E0560]: struct `shared::Adventurer` has no field named `class`
+  --> backend\src\engine\mission_resolver.rs:86:13
+   |
+86 |             class: Class::Warrior,
+   |             ^^^^^ `shared::Adventurer` does not have this field
+   |
+   = note: available fields are: `class_key`, `equipment`
+
+Some errors have detailed explanations: E0432, E0560.
+For more information about an error, try `rustc --explain E0432`.
+warning: `backend` (bin "backend" test) generated 1 warning
+error: could not compile `backend` (bin "backend" test) due to 2 previous errors; 1 warning emitted

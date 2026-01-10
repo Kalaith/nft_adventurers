@@ -1,0 +1,39 @@
+{
+    "enemy_types": [
+        "goblin",
+        "orc",
+        "skeleton",
+        "dragon"
+    ],
+    "prefixes": {
+        "goblin": "Gob",
+        "orc": "Orc",
+        "skeleton": "Bone",
+        "dragon": "Dragon",
+        "default": "Foe"
+    },
+    "suffixes": [
+        {
+            "min_kills": 0,
+            "suffix": "Bane"
+        },
+        {
+            "min_kills": 5,
+            "suffix": "Hunter"
+        },
+        {
+            "min_kills": 10,
+            "suffix": "Slayer"
+        },
+        {
+            "min_kills": 25,
+            "suffix": "Vanquisher"
+        },
+        {
+            "min_kills": 50,
+            "suffix": "Doom"
+        }
+    ],
+    "bonus_multiplier": 2.0,
+    "max_bonus": 50.0
+}
