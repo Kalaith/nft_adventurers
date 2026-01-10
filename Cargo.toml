@@ -1,0 +1,33 @@
+# NFT Adventurers Workspace
+
+[workspace]
+resolver = "2"
+members = [
+    "client",
+    "backend",
+    "shared",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+authors = ["NFT Adventurers Team"]
+
+[workspace.dependencies]
+# Shared across all crates
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+uuid = { version = "1", features = ["v4", "serde"] }
+chrono = { version = "0.4", features = ["serde"] }
+
+# Client-specific
+macroquad = "0.4"
+
+# Backend-specific
+axum = "0.7"
+tokio = { version = "1", features = ["full"] }
+sqlx = { version = "0.7", features = ["runtime-tokio", "sqlite", "uuid", "chrono"] }
+
+[profile.release]
+opt-level = "z"
+lto = true

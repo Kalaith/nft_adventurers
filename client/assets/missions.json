@@ -1,0 +1,44 @@
+{
+    "quick_skirmish": {
+        "name": "Quick Skirmish",
+        "description": "A brief encounter with minor foes. Safe for beginners.",
+        "duration_hours": 4,
+        "difficulty_class": 10,
+        "permadeath_chance": 0.0,
+        "reward_multiplier": 1.0,
+        "enemy_pool": [
+            "goblin",
+            "rat",
+            "skeleton"
+        ],
+        "xp_reward": 50
+    },
+    "dungeon_crawl": {
+        "name": "Dungeon Crawl",
+        "description": "Explore a dangerous dungeon filled with traps and monsters.",
+        "duration_hours": 12,
+        "difficulty_class": 15,
+        "permadeath_chance": 0.15,
+        "reward_multiplier": 3.0,
+        "enemy_pool": [
+            "orc",
+            "skeleton",
+            "goblin_chief"
+        ],
+        "xp_reward": 150
+    },
+    "boss_raid": {
+        "name": "Boss Raid",
+        "description": "Challenge a powerful boss. Many who enter do not return.",
+        "duration_hours": 24,
+        "difficulty_class": 20,
+        "permadeath_chance": 0.50,
+        "reward_multiplier": 10.0,
+        "enemy_pool": [
+            "dragon",
+            "demon",
+            "lich"
+        ],
+        "xp_reward": 500
+    }
+}

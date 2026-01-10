@@ -1,0 +1,62 @@
+{
+  "warrior": {
+    "name": "Warrior",
+    "role": "Tank/DPS",
+    "key_stat": "str",
+    "base_stats": {
+      "str_": 14,
+      "dex": 10,
+      "int": 8,
+      "con": 12,
+      "cha": 8
+    },
+    "signature_ability": "Taunt",
+    "skill_tree": [
+      { "id": "taunt", "name": "Taunt", "tier": 1, "description": "Force enemies to attack you" },
+      { "id": "cleave", "name": "Cleave", "tier": 1, "description": "Hit multiple enemies" },
+      { "id": "shield_bash", "name": "Shield Bash", "tier": 2, "description": "Stun an enemy" },
+      { "id": "battle_cry", "name": "Battle Cry", "tier": 2, "description": "+10% party damage" },
+      { "id": "immortal_stand", "name": "Immortal Stand", "tier": 3, "description": "Survive lethal damage once" }
+    ]
+  },
+  "mage": {
+    "name": "Mage",
+    "role": "Ranged/CC",
+    "key_stat": "int",
+    "base_stats": {
+      "str_": 8,
+      "dex": 10,
+      "int": 14,
+      "con": 10,
+      "cha": 10
+    },
+    "signature_ability": "Fireball",
+    "skill_tree": [
+      { "id": "fireball", "name": "Fireball", "tier": 1, "description": "AoE fire damage" },
+      { "id": "mana_shield", "name": "Mana Shield", "tier": 1, "description": "Absorb damage with mana" },
+      { "id": "frost_nova", "name": "Frost Nova", "tier": 2, "description": "Freeze nearby enemies" },
+      { "id": "arcane_missiles", "name": "Arcane Missiles", "tier": 2, "description": "Multi-target damage" },
+      { "id": "meteor", "name": "Meteor", "tier": 3, "description": "Massive AoE damage" }
+    ]
+  },
+  "cleric": {
+    "name": "Cleric",
+    "role": "Healer/Support",
+    "key_stat": "cha",
+    "base_stats": {
+      "str_": 10,
+      "dex": 8,
+      "int": 10,
+      "con": 12,
+      "cha": 14
+    },
+    "signature_ability": "Heal",
+    "skill_tree": [
+      { "id": "heal", "name": "Heal", "tier": 1, "description": "Restore HP to an ally" },
+      { "id": "smite", "name": "Smite", "tier": 1, "description": "Holy damage" },
+      { "id": "blessing", "name": "Blessing", "tier": 2, "description": "+5% all stats" },
+      { "id": "protection", "name": "Protection", "tier": 2, "description": "Reduce incoming damage" },
+      { "id": "divine_intervention", "name": "Divine Intervention", "tier": 3, "description": "Prevent party wipe" }
+    ]
+  }
+}

@@ -1,0 +1,212 @@
+{
+    "image_prompts": [
+        {
+            "id": "portrait_warrior",
+            "filename": "portrait_warrior",
+            "description": "Fantasy warrior portrait, muscular human fighter in heavy plate armor, battle-scarred face, determined expression, holding sword and shield, medieval fantasy art style, dramatic lighting, detailed character portrait, dark background with subtle flames",
+            "Width": 512,
+            "Height": 512,
+            "NegativePrompt": "bad hands, blurry, low quality, deformed face, extra limbs, watermark, text"
+        },
+        {
+            "id": "portrait_mage",
+            "filename": "portrait_mage",
+            "description": "Fantasy mage portrait, wise spellcaster in flowing robes with arcane symbols, glowing blue eyes, holding magical staff with crystal orb, mystical energy swirling around, medieval fantasy art style, dramatic lighting, detailed character portrait, dark background with magical particles",
+            "Width": 512,
+            "Height": 512,
+            "NegativePrompt": "bad hands, blurry, low quality, deformed face, extra limbs, watermark, text"
+        },
+        {
+            "id": "portrait_cleric",
+            "filename": "portrait_cleric",
+            "description": "Fantasy cleric portrait, holy priest in white and gold ceremonial robes, gentle but resolute expression, holding sacred tome and holy symbol, divine golden light emanating, medieval fantasy art style, dramatic lighting, detailed character portrait, cathedral background with stained glass",
+            "Width": 512,
+            "Height": 512,
+            "NegativePrompt": "bad hands, blurry, low quality, deformed face, extra limbs, watermark, text"
+        },
+        {
+            "id": "building_hearth",
+            "filename": "building_hearth",
+            "description": "Fantasy tavern hearth, large stone fireplace with roaring fire, cozy medieval inn interior, wooden chairs and tables, warm orange glow, rustic stone walls, hanging herbs and dried meats, medieval fantasy art style, detailed environment art, isometric view",
+            "Width": 512,
+            "Height": 512,
+            "NegativePrompt": "blurry, low quality, modern elements, watermark, text, people"
+        },
+        {
+            "id": "building_training_yard",
+            "filename": "building_training_yard",
+            "description": "Fantasy training yard, medieval outdoor practice arena, wooden training dummies, weapon racks with swords and shields, sandy ground with footprints, stone walls surrounding, morning light, medieval fantasy art style, detailed environment art, isometric view",
+            "Width": 512,
+            "Height": 512,
+            "NegativePrompt": "blurry, low quality, modern elements, watermark, text, people"
+        },
+        {
+            "id": "building_feat_anvil",
+            "filename": "building_feat_anvil",
+            "description": "Fantasy magical forge, glowing enchanted anvil with runic symbols, blacksmith workshop with mystical flames, magical sparks flying, ancient artifacts on shelves, purple and orange magical energy, medieval fantasy art style, detailed environment art, isometric view",
+            "Width": 512,
+            "Height": 512,
+            "NegativePrompt": "blurry, low quality, modern elements, watermark, text, people"
+        },
+        {
+            "id": "item_sword",
+            "filename": "item_sword",
+            "description": "Fantasy longsword icon, gleaming steel blade with silver hilt, ornate crossguard with gemstone, leather wrapped handle, detailed weapon art, game item icon style, dark background, subtle glow, centered composition",
+            "Width": 256,
+            "Height": 256,
+            "NegativePrompt": "blurry, low quality, watermark, text, hands, person"
+        },
+        {
+            "id": "item_staff",
+            "filename": "item_staff",
+            "description": "Fantasy magical staff icon, wooden staff with glowing crystal orb on top, carved runes along shaft, blue magical energy emanating, detailed weapon art, game item icon style, dark background, magical particles, centered composition",
+            "Width": 256,
+            "Height": 256,
+            "NegativePrompt": "blurry, low quality, watermark, text, hands, person"
+        },
+        {
+            "id": "item_shield",
+            "filename": "item_shield",
+            "description": "Fantasy kite shield icon, polished metal shield with heraldic emblem, reinforced edges with gold trim, battle worn details, detailed armor art, game item icon style, dark background, subtle reflection, centered composition",
+            "Width": 256,
+            "Height": 256,
+            "NegativePrompt": "blurry, low quality, watermark, text, hands, person"
+        },
+        {
+            "id": "item_armor",
+            "filename": "item_armor",
+            "description": "Fantasy plate armor chestpiece icon, gleaming steel breastplate with gold filigree, chainmail visible underneath, shoulder pauldrons, detailed armor art, game item icon style, dark background, metallic sheen, centered composition",
+            "Width": 256,
+            "Height": 256,
+            "NegativePrompt": "blurry, low quality, watermark, text, hands, person, mannequin"
+        },
+        {
+            "id": "item_ring",
+            "filename": "item_ring",
+            "description": "Fantasy magical ring icon, ornate gold band with glowing gemstone, arcane runes etched into metal, subtle magical aura, detailed jewelry art, game item icon style, dark background, mystical glow, centered composition",
+            "Width": 256,
+            "Height": 256,
+            "NegativePrompt": "blurry, low quality, watermark, text, hands, person, finger"
+        },
+        {
+            "id": "item_amulet",
+            "filename": "item_amulet",
+            "description": "Fantasy enchanted amulet icon, golden pendant with large crystal centerpiece, intricate metalwork chain, holy symbol design, magical energy pulsing, detailed jewelry art, game item icon style, dark background, divine glow, centered composition",
+            "Width": 256,
+            "Height": 256,
+            "NegativePrompt": "blurry, low quality, watermark, text, hands, person, neck"
+        },
+        {
+            "id": "item_holy_symbol",
+            "filename": "item_holy_symbol",
+            "description": "Fantasy holy symbol icon, radiant sun medallion in silver and gold, divine rays of light, sacred engravings, blessed relic appearance, detailed religious art, game item icon style, dark background, holy aura, centered composition",
+            "Width": 256,
+            "Height": 256,
+            "NegativePrompt": "blurry, low quality, watermark, text, hands, person"
+        },
+        {
+            "id": "mission_quick_skirmish",
+            "filename": "mission_quick_skirmish",
+            "description": "Fantasy forest clearing battle scene, goblins and giant rats in a sunlit woodland glade, mossy rocks and ancient trees, adventuring party visible in distance, action dynamic composition, medieval fantasy art style, vibrant colors, detailed environment",
+            "Width": 1024,
+            "Height": 576,
+            "NegativePrompt": "blurry, low quality, watermark, text, modern elements, UI elements"
+        },
+        {
+            "id": "mission_dungeon_crawl",
+            "filename": "mission_dungeon_crawl",
+            "description": "Fantasy dungeon corridor, dark stone passages with flickering torchlight, ancient traps visible, orc warriors and skeletons lurking, treasure chest glimpsed ahead, mysterious atmosphere, medieval fantasy art style, dramatic shadows, detailed environment",
+            "Width": 1024,
+            "Height": 576,
+            "NegativePrompt": "blurry, low quality, watermark, text, modern elements, UI elements"
+        },
+        {
+            "id": "mission_boss_raid",
+            "filename": "mission_boss_raid",
+            "description": "Fantasy epic boss chamber, massive dragon on pile of gold, volcanic cave with lava flows, ancient pillars and ruins, skull decorations, intimidating atmosphere, medieval fantasy art style, dramatic lighting with fire glow, detailed epic environment",
+            "Width": 1024,
+            "Height": 576,
+            "NegativePrompt": "blurry, low quality, watermark, text, modern elements, UI elements"
+        },
+        {
+            "id": "enemy_goblin",
+            "filename": "enemy_goblin",
+            "description": "Fantasy goblin creature portrait, small green-skinned monster with pointed ears, wicked grin showing sharp teeth, ragged leather armor, holding rusty dagger, cave background, medieval fantasy art style, detailed creature design",
+            "Width": 512,
+            "Height": 512,
+            "NegativePrompt": "blurry, low quality, watermark, text, cute, friendly"
+        },
+        {
+            "id": "enemy_rat",
+            "filename": "enemy_rat",
+            "description": "Fantasy giant rat creature portrait, oversized sewer rat with matted fur, glowing red eyes, sharp teeth bared, diseased appearance, dungeon sewer background, medieval fantasy art style, detailed creature design, menacing pose",
+            "Width": 512,
+            "Height": 512,
+            "NegativePrompt": "blurry, low quality, watermark, text, cute, friendly, pet"
+        },
+        {
+            "id": "enemy_skeleton",
+            "filename": "enemy_skeleton",
+            "description": "Fantasy skeleton warrior portrait, animated bones with glowing eye sockets, ancient rusted armor fragments, wielding notched sword, crypt background with cobwebs, medieval fantasy art style, detailed undead design, menacing pose",
+            "Width": 512,
+            "Height": 512,
+            "NegativePrompt": "blurry, low quality, watermark, text, cute, friendly"
+        },
+        {
+            "id": "enemy_orc",
+            "filename": "enemy_orc",
+            "description": "Fantasy orc warrior portrait, massive green-skinned brute with tusks, tribal war paint, heavy plate armor with spikes, wielding massive battle axe, war camp background, medieval fantasy art style, detailed creature design, aggressive pose",
+            "Width": 512,
+            "Height": 512,
+            "NegativePrompt": "blurry, low quality, watermark, text, cute, friendly"
+        },
+        {
+            "id": "enemy_goblin_chief",
+            "filename": "enemy_goblin_chief",
+            "description": "Fantasy goblin chieftain portrait, larger goblin with crown of bones, elaborate tribal armor with trophies, wielding decorated spear, commanding pose, throne room in cave, medieval fantasy art style, detailed creature design",
+            "Width": 512,
+            "Height": 512,
+            "NegativePrompt": "blurry, low quality, watermark, text, cute, friendly"
+        },
+        {
+            "id": "enemy_dragon",
+            "filename": "enemy_dragon",
+            "description": "Fantasy red dragon portrait, massive scaled wyrm with horned head, fiery eyes, smoke rising from nostrils, scales glistening, volcanic lair background, medieval fantasy art style, epic detailed creature design, intimidating majestic pose",
+            "Width": 512,
+            "Height": 512,
+            "NegativePrompt": "blurry, low quality, watermark, text, cute, friendly, cartoon"
+        },
+        {
+            "id": "enemy_demon",
+            "filename": "enemy_demon",
+            "description": "Fantasy demon lord portrait, massive red-skinned fiend with curved horns, bat wings, burning eyes, dark armor with infernal symbols, hellfire background, medieval fantasy art style, epic detailed creature design, terrifying powerful pose",
+            "Width": 512,
+            "Height": 512,
+            "NegativePrompt": "blurry, low quality, watermark, text, cute, friendly"
+        },
+        {
+            "id": "enemy_lich",
+            "filename": "enemy_lich",
+            "description": "Fantasy lich king portrait, skeletal undead mage in tattered royal robes, crown of dark metal, glowing green necromantic energy, phylactery visible, ancient throne room background, medieval fantasy art style, epic detailed creature design",
+            "Width": 512,
+            "Height": 512,
+            "NegativePrompt": "blurry, low quality, watermark, text, cute, friendly"
+        },
+        {
+            "id": "ui_background_main",
+            "filename": "ui_background_main",
+            "description": "Fantasy medieval hold overview, mountain fortress at sunset, warm golden lighting, stone walls and towers, banners flying, adventurer guild aesthetic, cozy but epic atmosphere, wide establishing shot, detailed environment art",
+            "Width": 1920,
+            "Height": 1080,
+            "NegativePrompt": "blurry, low quality, watermark, text, UI elements, modern elements"
+        },
+        {
+            "id": "ui_background_mission_select",
+            "filename": "ui_background_mission_select",
+            "description": "Fantasy war room interior, large wooden table with maps and candles, medieval strategic planning room, swords on walls, dim atmospheric lighting, adventure preparation mood, detailed environment art",
+            "Width": 1920,
+            "Height": 1080,
+            "NegativePrompt": "blurry, low quality, watermark, text, UI elements, modern elements, people"
+        }
+    ]
+}

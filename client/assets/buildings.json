@@ -1,0 +1,89 @@
+{
+    "hearth": {
+        "name": "Hearth",
+        "description": "The heart of your Hold. Provides basic rest and XP bonuses.",
+        "max_level": 3,
+        "effects_per_level": [
+            {
+                "xp_bonus": 0.05,
+                "rest_speed": 1.0
+            },
+            {
+                "xp_bonus": 0.10,
+                "rest_speed": 1.5
+            },
+            {
+                "xp_bonus": 0.15,
+                "rest_speed": 2.0
+            }
+        ],
+        "upgrade_costs": [
+            {
+                "feats": 0
+            },
+            {
+                "feats": 5
+            },
+            {
+                "feats": 15
+            }
+        ]
+    },
+    "training_yard": {
+        "name": "Training Yard",
+        "description": "Train your adventurers to unlock new skills.",
+        "max_level": 3,
+        "effects_per_level": [
+            {
+                "skill_slots": 1
+            },
+            {
+                "skill_slots": 2
+            },
+            {
+                "skill_slots": 3
+            }
+        ],
+        "upgrade_costs": [
+            {
+                "feats": 10
+            },
+            {
+                "feats": 25
+            },
+            {
+                "feats": 50
+            }
+        ]
+    },
+    "feat_anvil": {
+        "name": "Feat Anvil",
+        "description": "Forge and enhance feats on your equipment.",
+        "max_level": 3,
+        "effects_per_level": [
+            {
+                "xp_bonus": 0.08,
+                "feat_chance": 0.05
+            },
+            {
+                "xp_bonus": 0.16,
+                "feat_chance": 0.10
+            },
+            {
+                "xp_bonus": 0.24,
+                "feat_chance": 0.15
+            }
+        ],
+        "upgrade_costs": [
+            {
+                "feats": 10
+            },
+            {
+                "feats": 30
+            },
+            {
+                "feats": 60
+            }
+        ]
+    }
+}
