@@ -40,6 +40,7 @@ pub struct Game {
 pub enum PendingAction {
     Connect,
     Disconnect,
+    #[allow(dead_code)]
     RefreshPlayerData,
     SelectAdventurer(String),
     StartMission {
@@ -294,7 +295,10 @@ impl Game {
     fn upgrade_building(&mut self, building: &str) {
         match self.api.upgrade_building(building) {
             Ok(response) => {
-                self.status_message = Some(response.message);
+                self.status_message = Some(format!(
+                    "{} New level: {}",
+                    response.message, response.new_level
+                ));
                 if response.success {
                     self.load_player_data();
                 }
@@ -388,7 +392,10 @@ impl Game {
     fn recruit_adventurer(&mut self, class_key: &str, name: &str) {
         match self.api.recruit_adventurer(class_key, name) {
             Ok(response) => {
-                self.status_message = Some(response.message);
+                self.status_message = Some(match response.adventurer_id {
+                    Some(id) => format!("{} Adventurer: {}", response.message, id),
+                    None => response.message,
+                });
                 if response.success {
                     self.load_player_data();
                     self.state = GameState::Hold; // Return to hold after successful recruitment

@@ -4,8 +4,6 @@ use macroquad::prelude::*;
 
 pub mod screens;
 
-pub use macroquad_toolkit::colors::dark;
-
 pub fn draw_surface_panel(rect: Rect, fill: Color, border: Color, border_width: f32) {
     let surface = macroquad_toolkit::ui::SurfaceStyle::new(fill).with_border(border_width, border);
     macroquad_toolkit::ui::draw_surface(rect, &surface);

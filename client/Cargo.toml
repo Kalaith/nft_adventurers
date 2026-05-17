@@ -12,7 +12,10 @@ chrono = { workspace = true }
 macroquad = { workspace = true }
 macroquad-toolkit = { path = "../../macroquad-toolkit" }
 
-# HTTP client (works on both native and WASM via macroquad's fetch)
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+getrandom = { version = "0.2", features = ["js"] }
+
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 ureq = { version = "2.9", features = ["json"] }
 ethers = { version = "2.0", features = ["rustls"] }
 tokio = { version = "1", features = ["rt", "macros"] }

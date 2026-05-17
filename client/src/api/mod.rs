@@ -3,6 +3,48 @@
 use serde::{Deserialize, Serialize};
 use shared::PlayerData;
 
+#[cfg(target_arch = "wasm32")]
+mod ureq {
+    use serde::{de::DeserializeOwned, Serialize};
+    use std::fmt;
+
+    pub struct Request;
+    pub struct Response;
+
+    #[derive(Debug)]
+    pub struct Error;
+
+    impl fmt::Display for Error {
+        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+            write!(f, "HTTP API is unavailable in this WebGL build")
+        }
+    }
+
+    pub fn get(_url: &str) -> Request {
+        Request
+    }
+
+    pub fn post(_url: &str) -> Request {
+        Request
+    }
+
+    impl Request {
+        pub fn call(&self) -> Result<Response, Error> {
+            Err(Error)
+        }
+
+        pub fn send_json<T: Serialize + ?Sized>(&self, _request: &T) -> Result<Response, Error> {
+            Err(Error)
+        }
+    }
+
+    impl Response {
+        pub fn into_json<T: DeserializeOwned>(self) -> Result<T, Error> {
+            Err(Error)
+        }
+    }
+}
+
 /// Backend API base URL.
 const API_BASE: &str = "http://127.0.0.1:3000";
 
@@ -118,6 +160,7 @@ pub struct InventoryResponse {
 }
 
 /// Mission types response.
+#[allow(dead_code)]
 #[derive(Debug, Clone, Deserialize)]
 pub struct MissionTypesResponse {
     pub mission_types: Vec<shared::MissionTypeData>,
@@ -349,6 +392,7 @@ impl ApiClient {
     }
 
     /// Get mission types from backend.
+    #[allow(dead_code)]
     pub fn get_mission_types(&self) -> Result<Vec<shared::MissionTypeData>, String> {
         let url = format!("{}/api/game/mission-types", self.base_url);
         match ureq::get(&url).call() {

@@ -445,7 +445,7 @@ pub fn draw_upgrades(
                 let cost_s = (building.base_cost_stone as f32 * factor) as u32;
 
                 // Draw Cost Breakdown
-                let mut cost_x = x + 10.0;
+                let cost_x = x + 10.0;
                 let cost_y = y + 70.0;
 
                 let draw_cost = |amount: u32, current: u32, label: &str, draw_x: f32| {

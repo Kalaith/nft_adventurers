@@ -15,7 +15,15 @@ $ErrorActionPreference = "Stop"
 $ProjectRoot = $PSScriptRoot
 $DistDir = Join-Path $ProjectRoot "dist"
 $CargoToml = Join-Path $ProjectRoot "Cargo.toml"
-
+$TargetDir = Join-Path $ProjectRoot "target"
+try {
+    $CargoMetadata = cargo metadata --format-version 1 --no-deps | ConvertFrom-Json
+    if ($CargoMetadata.target_directory) {
+        $TargetDir = $CargoMetadata.target_directory
+    }
+} catch {
+    Write-Warning "Could not resolve Cargo target directory from metadata. Falling back to: $TargetDir"
+}
 # Deployment paths
 $PreviewRoot = "H:\xampp\htdocs"
 $ProductionRoot = "F:\WebHatchery"
@@ -28,15 +36,27 @@ if (-not (Test-Path $CargoToml)) {
 $CargoContent = Get-Content $CargoToml -Raw
 if ($CargoContent -match 'name\s*=\s*"([^"]+)"') {
     $ProjectName = $matches[1]
+} elseif ((Split-Path -Leaf $ProjectRoot) -eq "nft_adventurers") {
+    $ProjectName = "nft_adventurers"
 } else {
     $ProjectName = Split-Path -Leaf $ProjectRoot
     Write-Warning "Could not parse project name from Cargo.toml. Falling back to directory name: $ProjectName"
+}
+
+$CargoPackageName = $ProjectName
+$BinaryName = $ProjectName
+if ($ProjectName -eq "nft_adventurers") {
+    $CargoPackageName = "client"
+    $BinaryName = "client"
 }
 
 $ProjectTitle = ($ProjectName -replace '_', ' ').ToUpper()
 
 Write-Host "=== $ProjectTitle Publisher ===" -ForegroundColor Cyan
 Write-Host "Project: $ProjectName"
+if ($CargoPackageName -ne $ProjectName) {
+    Write-Host "Cargo package: $CargoPackageName"
+}
 Write-Host ""
 
 # Determine deployment target
@@ -77,7 +97,7 @@ if ($buildWindows) {
     $currentStep++
     if (-not $SkipBuild) {
         Write-Host "[$currentStep/$totalSteps] Building Windows release..." -ForegroundColor Yellow
-        cargo build --release
+        cargo build --release -p $CargoPackageName
         if ($LASTEXITCODE -ne 0) { Write-Error "Windows build failed!"; exit 1 }
         Write-Host "Windows build complete!" -ForegroundColor Green
     } else {
@@ -88,11 +108,11 @@ if ($buildWindows) {
     Write-Host "[$currentStep/$totalSteps] Packaging Windows build..." -ForegroundColor Yellow
     $WindowsPackageDir = Join-Path $DistDir "windows"
     New-Item -ItemType Directory -Path $WindowsPackageDir -Force | Out-Null
-    $ExePath = Join-Path $ProjectRoot "target\release\$ProjectName.exe"
+    $ExePath = Join-Path $TargetDir "release\$BinaryName.exe"
     if (-not (Test-Path $ExePath)) { Write-Error "Executable not found: $ExePath"; exit 1 }
-    Copy-Item $ExePath $WindowsPackageDir
+    Copy-Item $ExePath (Join-Path $WindowsPackageDir "$ProjectName.exe")
     $AssetsPath = Join-Path $ProjectRoot "assets"
-    if (Test-Path $AssetsPath) { Copy-Item $AssetsPath -Destination $WindowsPackageDir -Recurse }
+    if (Test-Path $AssetsPath) { $destAssets = Join-Path $WindowsPackageDir "assets"; if (Test-Path $destAssets) { Remove-Item $destAssets -Recurse -Force }; Copy-Item $AssetsPath -Destination $WindowsPackageDir -Recurse -Force }
     $WindowsZipPath = Join-Path $DistDir "${ProjectName}_windows.zip"
     Compress-Archive -Path "$WindowsPackageDir\*" -DestinationPath $WindowsZipPath -CompressionLevel Optimal
     Write-Host "Windows package created!" -ForegroundColor Green
@@ -104,7 +124,7 @@ if ($buildWebGL) {
         Write-Host "[$currentStep/$totalSteps] Building WebGL release..." -ForegroundColor Yellow
         $targets = rustup target list --installed
         if ($targets -notcontains "wasm32-unknown-unknown") { rustup target add wasm32-unknown-unknown }
-        cargo build --release --target wasm32-unknown-unknown
+        cargo build --release --target wasm32-unknown-unknown -p $CargoPackageName
         if ($LASTEXITCODE -ne 0) { Write-Error "WebGL build failed!"; exit 1 }
         Write-Host "WebGL build complete!" -ForegroundColor Green
     } else {
@@ -115,11 +135,11 @@ if ($buildWebGL) {
     Write-Host "[$currentStep/$totalSteps] Packaging WebGL build..." -ForegroundColor Yellow
     $WebGLPackageDir = Join-Path $DistDir "webgl"
     New-Item -ItemType Directory -Path $WebGLPackageDir -Force | Out-Null
-    $WasmPath = Join-Path $ProjectRoot "target\wasm32-unknown-unknown\release\$ProjectName.wasm"
+    $WasmPath = Join-Path $TargetDir "wasm32-unknown-unknown\release\$BinaryName.wasm"
     if (-not (Test-Path $WasmPath)) { Write-Error "WASM not found: $WasmPath"; exit 1 }
-    Copy-Item $WasmPath $WebGLPackageDir
+    Copy-Item $WasmPath (Join-Path $WebGLPackageDir "$ProjectName.wasm")
     $AssetsPath = Join-Path $ProjectRoot "assets"
-    if (Test-Path $AssetsPath) { Copy-Item $AssetsPath -Destination $WebGLPackageDir -Recurse }
+    if (Test-Path $AssetsPath) { $destAssets = Join-Path $WebGLPackageDir "assets"; if (Test-Path $destAssets) { Remove-Item $destAssets -Recurse -Force }; Copy-Item $AssetsPath -Destination $WebGLPackageDir -Recurse -Force }
     $JsBundlePath = Join-Path $WebGLPackageDir "mq_js_bundle.js"
     try { Invoke-WebRequest -Uri "https://not-fl3.github.io/miniquad-samples/mq_js_bundle.js" -OutFile $JsBundlePath } catch { Write-Warning "Could not download mq_js_bundle.js" }
     $WebGLZipPath = Join-Path $DistDir "${ProjectName}_webgl.zip"
