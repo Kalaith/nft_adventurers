@@ -4,8 +4,8 @@ use macroquad::prelude::*;
 use macroquad_toolkit::assets::AssetManager;
 use macroquad_toolkit::colors::dark;
 
-use shared::PlayerData;
 use crate::game::PendingAction;
+use shared::PlayerData;
 
 /// Draw the mission select screen.
 pub fn draw(
@@ -79,9 +79,21 @@ pub fn draw(
                 },
             );
         }
-        
-        draw_text(mission_type.display_name(), 150.0, y + 20.0, 18.0, dark::TEXT_BRIGHT);
-        draw_text(mission_type.description(), 150.0, y + 40.0, 14.0, dark::TEXT_DIM);
+
+        draw_text(
+            mission_type.display_name(),
+            150.0,
+            y + 20.0,
+            18.0,
+            dark::TEXT_BRIGHT,
+        );
+        draw_text(
+            mission_type.description(),
+            150.0,
+            y + 40.0,
+            14.0,
+            dark::TEXT_DIM,
+        );
 
         // Hardcoded costs/rewards for display
         let (cost, reward) = match mission_type {
@@ -89,8 +101,18 @@ pub fn draw(
             shared::MissionType::DungeonCrawl => ("Cost: 20G", "Reward: 50G, 20L, 10S"),
             shared::MissionType::BossRaid => ("Cost: 100G", "Reward: 500G, 100L, 50S"),
         };
-        
-        draw_text(cost, 150.0, y + 58.0, 14.0, if cost == "Free" { dark::POSITIVE } else { Color::new(1.0, 0.8, 0.2, 1.0) });
+
+        draw_text(
+            cost,
+            150.0,
+            y + 58.0,
+            14.0,
+            if cost == "Free" {
+                dark::POSITIVE
+            } else {
+                Color::new(1.0, 0.8, 0.2, 1.0)
+            },
+        );
         draw_text(reward, 250.0, y + 58.0, 14.0, dark::ACCENT);
 
         if can_start {
@@ -109,6 +131,6 @@ pub fn draw(
     if macroquad_toolkit::ui::button(20.0, screen_height() - 60.0, 100.0, 40.0, "Back") {
         action = Some(PendingAction::GoToHold);
     }
-    
+
     action
 }

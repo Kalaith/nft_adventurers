@@ -32,16 +32,10 @@ pub fn draw_main_menu() -> Option<PendingAction> {
         dark::TEXT_DIM,
     );
 
-    if macroquad_toolkit::ui::button(
-        center_x - 100.0,
-        center_y,
-        200.0,
-        50.0,
-        "Connect Wallet",
-    ) {
+    if macroquad_toolkit::ui::button(center_x - 100.0, center_y, 200.0, 50.0, "Connect Wallet") {
         return Some(PendingAction::Connect);
     }
-    
+
     None
 }
 

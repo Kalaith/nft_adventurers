@@ -3,14 +3,11 @@
 use macroquad::prelude::*;
 use macroquad_toolkit::colors::dark;
 
-use shared::PlayerData;
 use crate::game::PendingAction;
+use shared::PlayerData;
 
 /// Draw the skills screen for an adventurer.
-pub fn draw(
-    adventurer_id: &str,
-    player_data: Option<&PlayerData>,
-) -> Option<PendingAction> {
+pub fn draw(adventurer_id: &str, player_data: Option<&PlayerData>) -> Option<PendingAction> {
     let mut action = None;
     let mut y = 40.0;
 
@@ -94,6 +91,6 @@ pub fn draw(
     if macroquad_toolkit::ui::button(20.0, screen_height() - 60.0, 100.0, 40.0, "Back") {
         action = Some(PendingAction::GoToHold);
     }
-    
+
     action
 }

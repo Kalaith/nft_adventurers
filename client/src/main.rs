@@ -29,7 +29,7 @@ async fn main() {
 
     loop {
         game.update().await;
-        game.draw();  // Now takes &mut self
+        game.draw(); // Now takes &mut self
         next_frame().await;
     }
 }

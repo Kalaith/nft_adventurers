@@ -2216,6 +2216,7 @@ version = "0.1.0"
 dependencies = [
  "dirs",
  "macroquad",
+ "sapp-jsutils",
  "serde",
  "serde_json",
 ]
@@ -3232,6 +3233,12 @@ checksum = "93fc1dc3aaa9bfed95e02e6eadabb4baf7e3078b0bd1b4d7b6b0b68378900502"
 dependencies = [
  "winapi-util",
 ]
+
+[[package]]
+name = "sapp-jsutils"
+version = "0.1.7"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c6673c9c245fda02a1e826e199133d1c3d1b8e4a392c9dfe55e4f90a2489b149"
 
 [[package]]
 name = "scale-info"

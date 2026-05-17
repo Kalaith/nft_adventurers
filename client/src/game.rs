@@ -42,11 +42,20 @@ pub enum PendingAction {
     Disconnect,
     RefreshPlayerData,
     SelectAdventurer(String),
-    StartMission { mission_type: String, adventurer_id: String },
+    StartMission {
+        mission_type: String,
+        adventurer_id: String,
+    },
     ResolveMission(String),
     UpgradeBuilding(String),
-    UnlockSkill { adventurer_id: String, skill_id: String },
-    RecruitAdventurer { class_key: String, name: String },
+    UnlockSkill {
+        adventurer_id: String,
+        skill_id: String,
+    },
+    RecruitAdventurer {
+        class_key: String,
+        name: String,
+    },
     GoToMissions,
     GoToHold,
     GoToHoldUpgrades,
@@ -54,8 +63,14 @@ pub enum PendingAction {
     GoToRecruit,
     GoToInventory,
     GoToAdventurerDetail(String),
-    EquipItem { adventurer_id: String, item_id: String },
-    UnequipSlot { adventurer_id: String, slot: String },
+    EquipItem {
+        adventurer_id: String,
+        item_id: String,
+    },
+    UnequipSlot {
+        adventurer_id: String,
+        slot: String,
+    },
     GoToSmithy,
     GoToMarket,
     BuyItem(String),
@@ -66,17 +81,20 @@ impl Game {
     /// Create a new game instance.
     pub async fn new() -> Self {
         let mut assets = AssetManager::new();
-        
+
         // Load textures using external configuration
         let textures = crate::data::assets::TextureConfig::load_textures();
-        
+
         for entry in textures {
             match assets.load_texture(&entry.key, &entry.path).await {
                 Ok(_) => println!("Loaded: {}", entry.key),
-                Err(e) => eprintln!("Warning: Failed to load {} from '{}': {}", entry.key, entry.path, e),
+                Err(e) => eprintln!(
+                    "Warning: Failed to load {} from '{}': {}",
+                    entry.key, entry.path, e
+                ),
             }
         }
-        
+
         Self {
             state: GameState::MainMenu,
             api: ApiClient::new(),
@@ -118,7 +136,10 @@ impl Game {
                     self.selected_adventurer = Some(id);
                     return;
                 }
-                PendingAction::StartMission { mission_type, adventurer_id } => {
+                PendingAction::StartMission {
+                    mission_type,
+                    adventurer_id,
+                } => {
                     self.start_mission(&mission_type, &adventurer_id);
                     return;
                 }
@@ -130,7 +151,10 @@ impl Game {
                     self.upgrade_building(&building);
                     return;
                 }
-                PendingAction::UnlockSkill { adventurer_id, skill_id } => {
+                PendingAction::UnlockSkill {
+                    adventurer_id,
+                    skill_id,
+                } => {
                     self.unlock_skill(&adventurer_id, &skill_id);
                     return;
                 }
@@ -154,7 +178,9 @@ impl Game {
                     return;
                 }
                 PendingAction::GoToSkills(adv_id) => {
-                    self.state = GameState::Skills { adventurer_id: adv_id };
+                    self.state = GameState::Skills {
+                        adventurer_id: adv_id,
+                    };
                     return;
                 }
                 PendingAction::GoToInventory => {
@@ -162,14 +188,22 @@ impl Game {
                     return;
                 }
                 PendingAction::GoToAdventurerDetail(adv_id) => {
-                    self.state = GameState::AdventurerDetail { adventurer_id: adv_id };
+                    self.state = GameState::AdventurerDetail {
+                        adventurer_id: adv_id,
+                    };
                     return;
                 }
-                PendingAction::EquipItem { adventurer_id, item_id } => {
+                PendingAction::EquipItem {
+                    adventurer_id,
+                    item_id,
+                } => {
                     self.equip_item(&adventurer_id, &item_id);
                     return;
                 }
-                PendingAction::UnequipSlot { adventurer_id, slot } => {
+                PendingAction::UnequipSlot {
+                    adventurer_id,
+                    slot,
+                } => {
                     self.unequip_slot(&adventurer_id, &slot);
                     return;
                 }
@@ -177,7 +211,7 @@ impl Game {
                     self.state = GameState::Recruit;
                     // Ensure we have class data
                     if self.class_types.is_empty() {
-                         self.load_game_data();
+                        self.load_game_data();
                     }
                     return;
                 }
@@ -186,12 +220,12 @@ impl Game {
                     return;
                 }
                 PendingAction::GoToSmithy => {
-                     self.state = GameState::Smithy;
-                     return;
+                    self.state = GameState::Smithy;
+                    return;
                 }
                 PendingAction::GoToMarket => {
-                     self.state = GameState::Market;
-                     return;
+                    self.state = GameState::Market;
+                    return;
                 }
                 PendingAction::BuyItem(item_type) => {
                     self.buy_item(&item_type);
@@ -314,40 +348,40 @@ impl Game {
     }
 
     fn load_game_data(&mut self) {
-         match self.api.get_class_types() {
-             Ok(classes) => {
-                 self.class_types = classes;
-             }
-             Err(e) => {
-                 eprintln!("Failed to load class types: {}", e);
-             }
+        match self.api.get_class_types() {
+            Ok(classes) => {
+                self.class_types = classes;
+            }
+            Err(e) => {
+                eprintln!("Failed to load class types: {}", e);
+            }
         }
-        
+
         match self.api.get_building_types() {
-             Ok(buildings) => {
-                 self.building_types = buildings;
-             }
-             Err(e) => {
-                 eprintln!("Failed to load building types: {}", e);
-             }
+            Ok(buildings) => {
+                self.building_types = buildings;
+            }
+            Err(e) => {
+                eprintln!("Failed to load building types: {}", e);
+            }
         }
 
         match self.api.get_item_types() {
-             Ok(items) => {
-                 self.item_types = items;
-             }
-             Err(e) => {
-                 eprintln!("Failed to load item types: {}", e);
-             }
+            Ok(items) => {
+                self.item_types = items;
+            }
+            Err(e) => {
+                eprintln!("Failed to load item types: {}", e);
+            }
         }
 
         match self.api.get_consumable_types() {
-             Ok(consumables) => {
-                 self.consumable_types = consumables;
-             }
-             Err(e) => {
-                 eprintln!("Failed to load consumable types: {}", e);
-             }
+            Ok(consumables) => {
+                self.consumable_types = consumables;
+            }
+            Err(e) => {
+                eprintln!("Failed to load consumable types: {}", e);
+            }
         }
     }
 
@@ -407,24 +441,20 @@ impl Game {
             GameState::Hold => {
                 crate::ui::screens::hold::draw(self.player_data.as_ref(), &self.assets)
             }
-            GameState::HoldUpgrades { ref mut scroll } => {
-                crate::ui::screens::hold::draw_upgrades(
-                    self.player_data.as_ref(),
-                    &self.building_types,
-                    &self.assets,
-                    scroll,
-                )
-            }
+            GameState::HoldUpgrades { ref mut scroll } => crate::ui::screens::hold::draw_upgrades(
+                self.player_data.as_ref(),
+                &self.building_types,
+                &self.assets,
+                scroll,
+            ),
             GameState::Skills { adventurer_id } => {
                 crate::ui::screens::skills::draw(&adventurer_id, self.player_data.as_ref())
             }
-            GameState::MissionSelect => {
-                crate::ui::screens::mission_select::draw(
-                    self.player_data.as_ref(),
-                    &self.selected_adventurer,
-                    &self.assets,
-                )
-            }
+            GameState::MissionSelect => crate::ui::screens::mission_select::draw(
+                self.player_data.as_ref(),
+                &self.selected_adventurer,
+                &self.assets,
+            ),
             GameState::Inventory => {
                 crate::ui::screens::inventory::draw(self.player_data.as_ref(), &self.assets)
             }
@@ -435,29 +465,23 @@ impl Game {
                     &self.assets,
                 )
             }
-            GameState::Recruit => {
-                crate::ui::screens::recruit::draw(
-                    self.player_data.as_ref(),
-                    &self.class_types,
-                    &self.assets,
-                )
-            }
-            GameState::Smithy => {
-                crate::ui::screens::market::draw_smithy(
-                    self.player_data.as_ref(),
-                    &self.item_types,
-                    &self.assets
-                )
-            }
-            GameState::Market => {
-                crate::ui::screens::market::draw_market(
-                    self.player_data.as_ref(),
-                    &self.consumable_types,
-                    &self.assets
-                )
-            }
+            GameState::Recruit => crate::ui::screens::recruit::draw(
+                self.player_data.as_ref(),
+                &self.class_types,
+                &self.assets,
+            ),
+            GameState::Smithy => crate::ui::screens::market::draw_smithy(
+                self.player_data.as_ref(),
+                &self.item_types,
+                &self.assets,
+            ),
+            GameState::Market => crate::ui::screens::market::draw_market(
+                self.player_data.as_ref(),
+                &self.consumable_types,
+                &self.assets,
+            ),
         };
-        
+
         // Apply any action from the screen
         if let Some(action) = screen_action {
             self.pending_action = Some(action);
@@ -482,7 +506,10 @@ impl Game {
                 let wallet_address = identity.address();
                 let signature = identity.sign(&challenge.message).await;
 
-                match self.api.verify(&wallet_address, &signature, &challenge.nonce) {
+                match self
+                    .api
+                    .verify(&wallet_address, &signature, &challenge.nonce)
+                {
                     Ok(session) => {
                         if session.success {
                             self.connection_status = ConnectionStatus::Connected {
@@ -509,7 +536,6 @@ impl Game {
         }
         Some(StateTransition::ToMainMenu)
     }
-
 
     fn draw_connection_status(&self) {
         let status_text = match &self.connection_status {

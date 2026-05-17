@@ -451,7 +451,7 @@ impl ApiClient {
     pub fn buy_item(&self, item_type: &str) -> Result<MarketResponse, String> {
         let wallet = self.wallet_address.as_ref().ok_or("Not authenticated")?;
         let url = format!("{}/api/market/buy-item", self.base_url);
-        
+
         let request = BuyItemRequest {
             wallet_address: wallet.clone(),
             item_type: item_type.to_string(),
@@ -469,7 +469,7 @@ impl ApiClient {
     pub fn buy_consumable(&self, consumable_type: &str) -> Result<MarketResponse, String> {
         let wallet = self.wallet_address.as_ref().ok_or("Not authenticated")?;
         let url = format!("{}/api/market/buy-consumable", self.base_url);
-        
+
         let request = BuyConsumableRequest {
             wallet_address: wallet.clone(),
             consumable_type: consumable_type.to_string(),
