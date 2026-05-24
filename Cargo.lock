@@ -2222,6 +2222,7 @@ dependencies = [
  "sapp-jsutils",
  "serde",
  "serde_json",
+ "zip",
 ]
 
 [[package]]

@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=1280, height=720, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NFT Adventurers | Web Hatchery Games</title>
     <link rel="stylesheet" href="../shared.css">
     <style>
@@ -44,15 +44,16 @@
                 <section class="info-section">
                     <h2>About This Game</h2>
                     <p>
-                        A brief description of the game.
+                        Recruit adventurers, send them on missions, and manage a persistent
+                        RPG roster backed by a Rust client and service-oriented backend.
                     </p>
                 </section>
 
                 <section class="info-section" style="margin-top: 1rem;">
                     <h2>Controls</h2>
                     <ul class="controls-list">
-                        <li><kbd>WASD</kbd><span>Move</span></li>
-                        <li><kbd>Space</kbd><span>Action</span></li>
+                        <li><kbd>Mouse</kbd><span>Navigate menus and manage adventurers</span></li>
+                        <li><kbd>Esc</kbd><span>Back / pause</span></li>
                     </ul>
                 </section>
             </div>
@@ -66,12 +67,19 @@
                 <div class="sidebar-section">
                     <h3>Details</h3>
                     <ul class="meta-list">
-                        <li><span class="label">Genre</span><span class="value">Genre</span></li>
+                        <li><span class="label">Genre</span><span class="value">Idle RPG / Management</span></li>
                         <li><span class="label">Engine</span><span class="value">Macroquad</span></li>
                         <li><span class="label">Platform</span><span class="value">Browser, Windows</span></li>
                     </ul>
                 </div>
-            </aside>
+
+                <div class="sidebar-section">
+                    <h3>Downloads</h3>
+                    <a href="dist/nft_adventurers_windows.zip" class="btn btn-secondary"
+                        style="width: 100%; justify-content: center;" download>
+                        📥 Windows Build
+                    </a>
+                </div>            </aside>
         </div>
 
         <footer class="game-footer">
@@ -102,3 +110,4 @@
 </body>
 
 </html>
+
