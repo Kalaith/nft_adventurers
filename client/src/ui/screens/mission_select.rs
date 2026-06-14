@@ -5,6 +5,7 @@ use macroquad_toolkit::assets::AssetManager;
 use macroquad_toolkit::colors::dark;
 
 use crate::game::PendingAction;
+use macroquad_toolkit::ui::draw_ui_text;
 use shared::PlayerData;
 
 /// Draw the mission select screen.
@@ -16,11 +17,11 @@ pub fn draw(
     let mut action = None;
     let mut y = 40.0;
 
-    draw_text("Select Mission", 20.0, y, 32.0, dark::TEXT_BRIGHT);
+    draw_ui_text("Select Mission", 20.0, y, 32.0, dark::TEXT_BRIGHT);
     y += 40.0;
 
     // Adventurer selection
-    draw_text("Adventurer:", 20.0, y, 20.0, dark::ACCENT);
+    draw_ui_text("Adventurer:", 20.0, y, 20.0, dark::ACCENT);
     y += 25.0;
 
     let mut available = Vec::new();
@@ -33,7 +34,7 @@ pub fn draw(
     }
 
     if available.is_empty() {
-        draw_text("No adventurers available!", 30.0, y, 18.0, dark::NEGATIVE);
+        draw_ui_text("No adventurers available!", 30.0, y, 18.0, dark::NEGATIVE);
         y += 30.0;
     } else {
         for (id, name, level) in &available {
@@ -52,7 +53,7 @@ pub fn draw(
     }
 
     y += 20.0;
-    draw_text("Mission:", 20.0, y, 20.0, dark::ACCENT);
+    draw_ui_text("Mission:", 20.0, y, 20.0, dark::ACCENT);
     y += 30.0;
 
     let missions = [
@@ -80,14 +81,14 @@ pub fn draw(
             );
         }
 
-        draw_text(
+        draw_ui_text(
             mission_type.display_name(),
             150.0,
             y + 20.0,
             18.0,
             dark::TEXT_BRIGHT,
         );
-        draw_text(
+        draw_ui_text(
             mission_type.description(),
             150.0,
             y + 40.0,
@@ -102,7 +103,7 @@ pub fn draw(
             shared::MissionType::BossRaid => ("Cost: 100G", "Reward: 500G, 100L, 50S"),
         };
 
-        draw_text(
+        draw_ui_text(
             cost,
             150.0,
             y + 58.0,
@@ -113,7 +114,7 @@ pub fn draw(
                 Color::new(1.0, 0.8, 0.2, 1.0)
             },
         );
-        draw_text(reward, 250.0, y + 58.0, 14.0, dark::ACCENT);
+        draw_ui_text(reward, 250.0, y + 58.0, 14.0, dark::ACCENT);
 
         if can_start {
             if macroquad_toolkit::ui::button(350.0, y + 15.0, 80.0, 28.0, "Go") {

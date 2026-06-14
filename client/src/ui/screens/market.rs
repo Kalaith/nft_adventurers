@@ -3,6 +3,7 @@ use macroquad::prelude::*;
 use macroquad_toolkit::assets::AssetManager;
 use macroquad_toolkit::colors::dark;
 use macroquad_toolkit::ui::button;
+use macroquad_toolkit::ui::draw_ui_text;
 use shared::{ConsumableTypeData, ItemTypeData, PlayerData};
 
 const COMMON_PANEL_WIDTH: f32 = 400.0;
@@ -20,7 +21,7 @@ pub fn draw_smithy(
             "Gold: {}  Lumber: {}  Stone: {}",
             data.hold.gold, data.hold.lumber, data.hold.stone
         );
-        draw_text(&metrics, 20.0, 20.0, 20.0, dark::TEXT_DIM);
+        draw_ui_text(&metrics, 20.0, 20.0, 20.0, dark::TEXT_DIM);
     }
 
     // Back button
@@ -28,7 +29,7 @@ pub fn draw_smithy(
         return Some(PendingAction::GoToHold);
     }
 
-    draw_text(
+    draw_ui_text(
         "Smithy - Buy Equipment",
         20.0,
         100.0,
@@ -67,7 +68,7 @@ pub fn draw_smithy(
                 50.0,
                 Color::new(0.05, 0.05, 0.08, 0.5),
             );
-            draw_text(
+            draw_ui_text(
                 &item.icon_key[..2.min(item.icon_key.len())],
                 x + 25.0,
                 y + 40.0,
@@ -76,7 +77,7 @@ pub fn draw_smithy(
             );
 
             // Info
-            draw_text(
+            draw_ui_text(
                 &item.display_name,
                 x + 70.0,
                 y + 25.0,
@@ -93,7 +94,7 @@ pub fn draw_smithy(
             } else {
                 "Stats: ?".to_string()
             };
-            draw_text(&stats, x + 70.0, y + 45.0, 16.0, dark::TEXT_DIM);
+            draw_ui_text(&stats, x + 70.0, y + 45.0, 16.0, dark::TEXT_DIM);
 
             // Buy Button
             let cost = item.cost;
@@ -114,7 +115,7 @@ pub fn draw_smithy(
             y += 80.0;
         }
     } else {
-        draw_text("Loading...", 20.0, 140.0, 20.0, dark::TEXT_DIM);
+        draw_ui_text("Loading...", 20.0, 140.0, 20.0, dark::TEXT_DIM);
     }
 
     action
@@ -133,7 +134,7 @@ pub fn draw_market(
             "Gold: {}  Lumber: {}  Stone: {}",
             data.hold.gold, data.hold.lumber, data.hold.stone
         );
-        draw_text(&metrics, 20.0, 20.0, 20.0, dark::TEXT_DIM);
+        draw_ui_text(&metrics, 20.0, 20.0, 20.0, dark::TEXT_DIM);
     }
 
     // Back button
@@ -141,7 +142,7 @@ pub fn draw_market(
         return Some(PendingAction::GoToHold);
     }
 
-    draw_text(
+    draw_ui_text(
         "Market - Buy Consumables",
         20.0,
         100.0,
@@ -180,7 +181,7 @@ pub fn draw_market(
                 50.0,
                 Color::new(0.05, 0.05, 0.08, 0.5),
             );
-            draw_text(
+            draw_ui_text(
                 &cons.icon_key[..2.min(cons.icon_key.len())],
                 x + 25.0,
                 y + 50.0,
@@ -189,14 +190,14 @@ pub fn draw_market(
             );
 
             // Info
-            draw_text(
+            draw_ui_text(
                 &cons.display_name,
                 x + 70.0,
                 y + 25.0,
                 20.0,
                 dark::TEXT_BRIGHT,
             );
-            draw_text(&cons.description, x + 70.0, y + 45.0, 14.0, dark::TEXT_DIM);
+            draw_ui_text(&cons.description, x + 70.0, y + 45.0, 14.0, dark::TEXT_DIM);
 
             // Buy Button
             let cost = cons.cost;
@@ -217,7 +218,7 @@ pub fn draw_market(
             y += 100.0;
         }
     } else {
-        draw_text("Loading...", 20.0, 140.0, 20.0, dark::TEXT_DIM);
+        draw_ui_text("Loading...", 20.0, 140.0, 20.0, dark::TEXT_DIM);
     }
 
     action

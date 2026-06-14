@@ -4,6 +4,7 @@ use macroquad::prelude::*;
 use macroquad_toolkit::assets::AssetManager;
 
 use crate::game::PendingAction;
+use macroquad_toolkit::ui::draw_ui_text;
 use shared::PlayerData;
 
 /// Draw the inventory screen.
@@ -24,7 +25,7 @@ pub fn draw(player_data: Option<&PlayerData>, assets: &AssetManager) -> Option<P
 
     // Title bar
     crate::ui::draw_title_surface(Rect::new(padding, padding, panel_width, 50.0));
-    draw_text(
+    draw_ui_text(
         "📦 Inventory",
         padding + 15.0,
         padding + 35.0,
@@ -39,7 +40,7 @@ pub fn draw(player_data: Option<&PlayerData>, assets: &AssetManager) -> Option<P
         let item_panel_height = 200.0;
         crate::ui::draw_content_surface(Rect::new(padding, y, panel_width, item_panel_height));
 
-        draw_text(
+        draw_ui_text(
             "⚔ Equipment",
             padding + 15.0,
             y + 22.0,
@@ -48,7 +49,7 @@ pub fn draw(player_data: Option<&PlayerData>, assets: &AssetManager) -> Option<P
         );
 
         if data.items.is_empty() {
-            draw_text(
+            draw_ui_text(
                 "No items yet. Complete missions to earn loot!",
                 padding + 15.0,
                 y + 60.0,
@@ -98,7 +99,7 @@ pub fn draw(player_data: Option<&PlayerData>, assets: &AssetManager) -> Option<P
                 } else {
                     item.current_name.clone()
                 };
-                draw_text(
+                draw_ui_text(
                     &display_name,
                     item_x + 2.0,
                     item_y + item_size + 14.0,
@@ -107,7 +108,7 @@ pub fn draw(player_data: Option<&PlayerData>, assets: &AssetManager) -> Option<P
                 );
 
                 if item.is_equipped() {
-                    draw_text(
+                    draw_ui_text(
                         "E",
                         item_x + item_size - 12.0,
                         item_y + 12.0,
@@ -144,7 +145,7 @@ pub fn draw(player_data: Option<&PlayerData>, assets: &AssetManager) -> Option<P
             Color::new(0.4, 0.4, 0.6, 0.5),
         );
 
-        draw_text(
+        draw_ui_text(
             "🧪 Consumables",
             padding + 15.0,
             y + 22.0,
@@ -153,7 +154,7 @@ pub fn draw(player_data: Option<&PlayerData>, assets: &AssetManager) -> Option<P
         );
 
         if data.consumables.is_empty() {
-            draw_text(
+            draw_ui_text(
                 "No consumables. Find potions on missions!",
                 padding + 15.0,
                 y + 60.0,
@@ -189,15 +190,15 @@ pub fn draw(player_data: Option<&PlayerData>, assets: &AssetManager) -> Option<P
                     }
                     chars.into_iter().collect::<String>()
                 };
-                draw_text(&display_name, cons_x + 10.0, y + 55.0, 14.0, WHITE);
-                draw_text(
+                draw_ui_text(&display_name, cons_x + 10.0, y + 55.0, 14.0, WHITE);
+                draw_ui_text(
                     &format!("Type: {}", consumable.type_key),
                     cons_x + 10.0,
                     y + 72.0,
                     10.0,
                     Color::new(0.6, 0.6, 0.6, 1.0),
                 );
-                draw_text(
+                draw_ui_text(
                     &format!("x{}", consumable.quantity),
                     cons_x + card_width - 30.0,
                     y + 55.0,

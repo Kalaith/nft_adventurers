@@ -5,6 +5,7 @@ use macroquad_toolkit::assets::AssetManager;
 use macroquad_toolkit::colors::dark;
 
 use crate::game::PendingAction;
+use macroquad_toolkit::ui::draw_ui_text;
 use shared::{Item, PlayerData};
 
 /// Draw the adventurer detail screen.
@@ -37,7 +38,7 @@ pub fn draw(
     let adv = match adventurer {
         Some(a) => a,
         None => {
-            draw_text("Adventurer not found", padding, 80.0, 24.0, dark::NEGATIVE);
+            draw_ui_text("Adventurer not found", padding, 80.0, 24.0, dark::NEGATIVE);
             if macroquad_toolkit::ui::button(padding, screen_height() - 60.0, 100.0, 40.0, "← Back")
             {
                 return Some(PendingAction::GoToHold);
@@ -74,8 +75,8 @@ pub fn draw(
         }
         s
     };
-    draw_text(&adv.name, padding + 85.0, padding + 35.0, 28.0, WHITE);
-    draw_text(
+    draw_ui_text(&adv.name, padding + 85.0, padding + 35.0, 28.0, WHITE);
+    draw_ui_text(
         &format!("{} • Level {}", class_str, adv.level),
         padding + 85.0,
         padding + 58.0,
@@ -89,35 +90,35 @@ pub fn draw(
     let stats_height = 120.0;
     crate::ui::draw_content_surface(Rect::new(padding, y, panel_width * 0.4, stats_height));
 
-    draw_text(
+    draw_ui_text(
         "📊 Stats",
         padding + 10.0,
         y + 22.0,
         18.0,
         Color::new(0.7, 0.8, 1.0, 1.0),
     );
-    draw_text(
+    draw_ui_text(
         &format!("STR: {}", adv.stats.str_),
         padding + 15.0,
         y + 50.0,
         14.0,
         WHITE,
     );
-    draw_text(
+    draw_ui_text(
         &format!("DEX: {}", adv.stats.dex),
         padding + 15.0,
         y + 68.0,
         14.0,
         WHITE,
     );
-    draw_text(
+    draw_ui_text(
         &format!("INT: {}", adv.stats.int),
         padding + 15.0,
         y + 86.0,
         14.0,
         WHITE,
     );
-    draw_text(
+    draw_ui_text(
         &format!("CON: {}", adv.stats.con),
         padding + 15.0,
         y + 104.0,
@@ -125,7 +126,7 @@ pub fn draw(
         WHITE,
     );
 
-    draw_text(
+    draw_ui_text(
         &format!("XP: {}", adv.xp),
         padding + 120.0,
         y + 50.0,
@@ -152,7 +153,7 @@ pub fn draw(
         Color::new(0.4, 0.4, 0.6, 0.5),
     );
 
-    draw_text(
+    draw_ui_text(
         "⚔ Equipment",
         equip_x + 10.0,
         y + 22.0,
@@ -180,7 +181,7 @@ pub fn draw(
     for (slot_name, slot) in slots {
         let equipped_item = items.iter().find(|i| i.equip_slot == slot);
 
-        draw_text(
+        draw_ui_text(
             &format!("{}: ", slot_name),
             equip_x + 15.0,
             slot_y,
@@ -189,7 +190,7 @@ pub fn draw(
         );
 
         if let Some(item) = equipped_item {
-            draw_text(&item.current_name, equip_x + 90.0, slot_y, 14.0, WHITE);
+            draw_ui_text(&item.current_name, equip_x + 90.0, slot_y, 14.0, WHITE);
 
             // Unequip button
             if macroquad_toolkit::ui::button(
@@ -205,7 +206,7 @@ pub fn draw(
                 });
             }
         } else {
-            draw_text(
+            draw_ui_text(
                 "(empty)",
                 equip_x + 90.0,
                 slot_y,
@@ -237,7 +238,7 @@ pub fn draw(
         Color::new(0.4, 0.4, 0.6, 0.5),
     );
 
-    draw_text(
+    draw_ui_text(
         "📦 Available Items (click to equip)",
         padding + 15.0,
         y + 22.0,
@@ -249,7 +250,7 @@ pub fn draw(
         let unequipped: Vec<&Item> = data.items.iter().filter(|i| !i.is_equipped()).collect();
 
         if unequipped.is_empty() {
-            draw_text(
+            draw_ui_text(
                 "No unequipped items",
                 padding + 15.0,
                 y + 60.0,
@@ -321,7 +322,7 @@ pub fn draw(
                     shared::EquipSlot::Armor => "A",
                     shared::EquipSlot::Accessory => "R",
                 };
-                draw_text(
+                draw_ui_text(
                     slot_char,
                     item_x + 2.0,
                     item_y + item_size + 14.0,

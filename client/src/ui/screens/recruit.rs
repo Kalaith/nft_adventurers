@@ -6,6 +6,7 @@ use macroquad_toolkit::colors::dark;
 use shared::{ClassTypeData, PlayerData};
 
 use crate::game::PendingAction;
+use macroquad_toolkit::ui::draw_ui_text;
 
 pub fn draw(
     player_data: Option<&PlayerData>,
@@ -15,14 +16,14 @@ pub fn draw(
     let mut action = None;
     let mut y = 40.0;
 
-    draw_text("Recruit Adventurer", 20.0, y, 32.0, dark::TEXT_BRIGHT);
+    draw_ui_text("Recruit Adventurer", 20.0, y, 32.0, dark::TEXT_BRIGHT);
 
     // Get tavern level
     let tavern_level = player_data
         .map(|d| d.hold.building_level("tavern"))
         .unwrap_or(0);
 
-    draw_text(
+    draw_ui_text(
         &format!("Tavern Level: {}", tavern_level),
         350.0,
         y,
@@ -33,7 +34,7 @@ pub fn draw(
     y += 50.0;
 
     if class_types.is_empty() {
-        draw_text("Loading classes...", 40.0, y, 20.0, dark::TEXT_DIM);
+        draw_ui_text("Loading classes...", 40.0, y, 20.0, dark::TEXT_DIM);
     } else {
         for class in class_types {
             let is_unlocked = tavern_level >= class.unlock_level;
@@ -73,18 +74,18 @@ pub fn draw(
             }
 
             // Info
-            draw_text(&class.display_name, 110.0, y + 25.0, 24.0, WHITE);
+            draw_ui_text(&class.display_name, 110.0, y + 25.0, 24.0, WHITE);
 
             // Stats preview
             let stats_text = format!(
                 "Str {} • Dex {} • Int {} • Con {} • Cha {}",
                 class.base_str, class.base_dex, class.base_int, class.base_con, class.base_cha
             );
-            draw_text(&stats_text, 110.0, y + 45.0, 14.0, dark::TEXT_DIM);
+            draw_ui_text(&stats_text, 110.0, y + 45.0, 14.0, dark::TEXT_DIM);
 
             // Cost
             if class.cost > 0 {
-                draw_text(
+                draw_ui_text(
                     &format!("Cost: {} Gold", class.cost),
                     110.0,
                     y + 65.0,
@@ -92,7 +93,7 @@ pub fn draw(
                     Color::new(1.0, 0.8, 0.2, 1.0),
                 );
             } else {
-                draw_text(
+                draw_ui_text(
                     "Free",
                     110.0,
                     y + 65.0,
@@ -114,7 +115,7 @@ pub fn draw(
                     });
                 }
             } else {
-                draw_text(
+                draw_ui_text(
                     &format!("Unlock Lv.{}", class.unlock_level),
                     400.0,
                     y + 45.0,

@@ -4,6 +4,7 @@ use macroquad::prelude::*;
 use macroquad_toolkit::colors::dark;
 
 use crate::game::PendingAction;
+use macroquad_toolkit::ui::draw_ui_text;
 use shared::PlayerData;
 
 /// Draw the skills screen for an adventurer.
@@ -23,7 +24,7 @@ pub fn draw(adventurer_id: &str, player_data: Option<&PlayerData>) -> Option<Pen
     let adv = match adventurer {
         Some(a) => a,
         None => {
-            draw_text("Adventurer not found", 20.0, y, 24.0, dark::NEGATIVE);
+            draw_ui_text("Adventurer not found", 20.0, y, 24.0, dark::NEGATIVE);
             if macroquad_toolkit::ui::button(20.0, screen_height() - 60.0, 100.0, 40.0, "Back") {
                 return Some(PendingAction::GoToHold);
             }
@@ -31,7 +32,7 @@ pub fn draw(adventurer_id: &str, player_data: Option<&PlayerData>) -> Option<Pen
         }
     };
 
-    draw_text(
+    draw_ui_text(
         &format!("{} - Skills", adv.name),
         20.0,
         y,
@@ -62,7 +63,7 @@ pub fn draw(adventurer_id: &str, player_data: Option<&PlayerData>) -> Option<Pen
             dark::TEXT_DIM
         };
 
-        draw_text(
+        draw_ui_text(
             &format!("[Tier {}] {}", node.tier, node.name),
             30.0,
             y,
@@ -70,7 +71,7 @@ pub fn draw(adventurer_id: &str, player_data: Option<&PlayerData>) -> Option<Pen
             color,
         );
         y += 20.0;
-        draw_text(&node.description, 30.0, y, 14.0, dark::TEXT_DIM);
+        draw_ui_text(&node.description, 30.0, y, 14.0, dark::TEXT_DIM);
         y += 20.0;
 
         if can_unlock {
@@ -82,7 +83,7 @@ pub fn draw(adventurer_id: &str, player_data: Option<&PlayerData>) -> Option<Pen
             }
             y += 30.0;
         } else if unlocked {
-            draw_text("✓ Unlocked", 30.0, y, 14.0, dark::POSITIVE);
+            draw_ui_text("✓ Unlocked", 30.0, y, 14.0, dark::POSITIVE);
             y += 20.0;
         }
         y += 15.0;

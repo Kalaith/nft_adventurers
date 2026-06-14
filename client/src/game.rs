@@ -6,6 +6,7 @@ use macroquad_toolkit::colors::dark;
 
 use crate::api::ApiClient;
 use crate::state::{GameState, StateTransition};
+use macroquad_toolkit::ui::draw_ui_text;
 use shared::PlayerData;
 
 /// Connection status for UI display.
@@ -561,12 +562,12 @@ impl Game {
             ConnectionStatus::Error(_) => dark::NEGATIVE,
         };
 
-        draw_text(&status_text, 10.0, 20.0, 14.0, color);
+        draw_ui_text(&status_text, 10.0, 20.0, 14.0, color);
     }
 
     fn draw_status_message(&mut self) {
         if let Some(msg) = &self.status_message {
-            draw_text(msg, 10.0, screen_height() - 20.0, 16.0, dark::WARNING);
+            draw_ui_text(msg, 10.0, screen_height() - 20.0, 16.0, dark::WARNING);
         }
     }
 }

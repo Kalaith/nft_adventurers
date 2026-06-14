@@ -12,7 +12,7 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
-$rootPublisher = Join-Path (Split-Path $PSScriptRoot -Parent) "publish.ps1"
+$rootPublisher = Join-Path (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent) "publish.ps1"
 
 if (-not (Test-Path $rootPublisher)) {
     Write-Error "RustGames root publisher not found: $rootPublisher"

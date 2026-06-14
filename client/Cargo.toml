@@ -10,7 +10,7 @@ serde_json = { workspace = true }
 uuid = { workspace = true }
 chrono = { workspace = true }
 macroquad = { workspace = true }
-macroquad-toolkit = { path = "../../macroquad-toolkit" }
+macroquad-toolkit = { path = "../../../macroquad-toolkit" }
 
 [target.'cfg(target_arch = "wasm32")'.dependencies]
 getrandom = { version = "0.2", features = ["js"] }

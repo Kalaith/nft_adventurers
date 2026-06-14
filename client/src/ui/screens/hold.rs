@@ -5,6 +5,7 @@ use macroquad_toolkit::assets::AssetManager;
 use macroquad_toolkit::colors::dark;
 
 use crate::game::PendingAction;
+use macroquad_toolkit::ui::{draw_ui_text, measure_ui_text};
 use shared::PlayerData;
 
 /// Draw the main hold screen.
@@ -42,7 +43,7 @@ pub fn draw(player_data: Option<&PlayerData>, assets: &AssetManager) -> Option<P
 
     // Title bar
     crate::ui::draw_title_surface(Rect::new(padding, padding, panel_width, 50.0));
-    draw_text(
+    draw_ui_text(
         "Your Hold",
         padding + 15.0,
         padding + 35.0,
@@ -55,8 +56,8 @@ pub fn draw(player_data: Option<&PlayerData>, assets: &AssetManager) -> Option<P
             "🪙 {}  🌲 {}  🪨 {}",
             data.hold.gold, data.hold.lumber, data.hold.stone
         );
-        let res_size = measure_text(&res_text, None, 20, 1.0);
-        draw_text(
+        let res_size = measure_ui_text(&res_text, None, 20, 1.0);
+        draw_ui_text(
             &res_text,
             screen_width() - padding - res_size.width - 20.0,
             padding + 32.0,
@@ -77,7 +78,7 @@ pub fn draw(player_data: Option<&PlayerData>, assets: &AssetManager) -> Option<P
             adv_panel_height,
         ));
 
-        draw_text(
+        draw_ui_text(
             "⚔ Adventurers",
             padding + 15.0,
             y + 22.0,
@@ -132,8 +133,8 @@ pub fn draw(player_data: Option<&PlayerData>, assets: &AssetManager) -> Option<P
                 s
             };
 
-            draw_text(&adv.name, text_x, card_y + 22.0, 20.0, WHITE);
-            draw_text(
+            draw_ui_text(&adv.name, text_x, card_y + 22.0, 20.0, WHITE);
+            draw_ui_text(
                 &format!("{} • Level {}", class_str, adv.level),
                 text_x,
                 card_y + 42.0,
@@ -151,7 +152,7 @@ pub fn draw(player_data: Option<&PlayerData>, assets: &AssetManager) -> Option<P
                 }
                 shared::AdventurerStatus::Dead => ("Dead", Color::new(0.5, 0.5, 0.5, 1.0)),
             };
-            draw_text(status_str, text_x, card_y + 60.0, 14.0, status_color);
+            draw_ui_text(status_str, text_x, card_y + 60.0, 14.0, status_color);
 
             if macroquad_toolkit::ui::button(
                 card_x + card_width - 90.0,
@@ -187,7 +188,7 @@ pub fn draw(player_data: Option<&PlayerData>, assets: &AssetManager) -> Option<P
             Color::new(0.4, 0.4, 0.6, 0.5),
         );
 
-        draw_text(
+        draw_ui_text(
             "⏱ Active Missions",
             missions_x + 15.0,
             y + 22.0,
@@ -197,7 +198,7 @@ pub fn draw(player_data: Option<&PlayerData>, assets: &AssetManager) -> Option<P
 
         let mut mission_y = y + 40.0;
         if data.active_missions.is_empty() {
-            draw_text(
+            draw_ui_text(
                 "No active missions",
                 missions_x + 15.0,
                 mission_y + 15.0,
@@ -220,14 +221,14 @@ pub fn draw(player_data: Option<&PlayerData>, assets: &AssetManager) -> Option<P
                     Color::new(0.8, 0.8, 0.6, 1.0)
                 };
 
-                draw_text(
+                draw_ui_text(
                     &format!("• {}", mission.mission_type.display_name()),
                     missions_x + 15.0,
                     mission_y,
                     16.0,
                     WHITE,
                 );
-                draw_text(
+                draw_ui_text(
                     &time_str,
                     missions_x + missions_width - 100.0,
                     mission_y,
@@ -323,7 +324,7 @@ pub fn draw_upgrades(
 ) -> Option<PendingAction> {
     let mut action = None;
 
-    draw_text("Building Upgrades", 20.0, 40.0, 32.0, dark::TEXT_BRIGHT);
+    draw_ui_text("Building Upgrades", 20.0, 40.0, 32.0, dark::TEXT_BRIGHT);
 
     // Draw current resources at top for reference
     if let Some(data) = player_data {
@@ -331,7 +332,7 @@ pub fn draw_upgrades(
             "Hold: {} Gold | {} Lumber | {} Stone",
             data.hold.gold, data.hold.lumber, data.hold.stone
         );
-        draw_text(
+        draw_ui_text(
             &res_text,
             screen_width() - 350.0,
             30.0,
@@ -349,7 +350,7 @@ pub fn draw_upgrades(
 
     if let Some(data) = player_data {
         if building_types.is_empty() {
-            draw_text(
+            draw_ui_text(
                 "Loading building data...",
                 40.0,
                 start_y,
@@ -422,7 +423,7 @@ pub fn draw_upgrades(
             let level = data.hold.building_level(&building.type_key);
             let id = &building.type_key;
 
-            draw_text(
+            draw_ui_text(
                 &format!("{} (Lv.{})", building.display_name, level),
                 x + 70.0,
                 y + 25.0,
@@ -436,7 +437,7 @@ pub fn draw_upgrades(
             } else {
                 building.description.clone()
             };
-            draw_text(&desc, x + 70.0, y + 45.0, 14.0, dark::TEXT_DIM);
+            draw_ui_text(&desc, x + 70.0, y + 45.0, 14.0, dark::TEXT_DIM);
 
             if level < 5 {
                 let factor = building.cost_scaling.powi(level as i32);
@@ -455,7 +456,7 @@ pub fn draw_upgrades(
                         } else {
                             dark::NEGATIVE
                         };
-                        draw_text(
+                        draw_ui_text(
                             &format!("{}: {}", label, amount),
                             draw_x,
                             cost_y,
@@ -465,7 +466,7 @@ pub fn draw_upgrades(
                         // Status indicator
                         draw_circle(
                             draw_x
-                                + measure_text(&format!("{}: {}", label, amount), None, 14, 1.0)
+                                + measure_ui_text(&format!("{}: {}", label, amount), None, 14, 1.0)
                                     .width
                                 + 5.0,
                             cost_y - 5.0,
@@ -497,7 +498,7 @@ pub fn draw_upgrades(
                     }
                 }
             } else {
-                draw_text(
+                draw_ui_text(
                     "MAX LEVEL",
                     x + card_width - 100.0,
                     y + card_height - 25.0,
@@ -512,13 +513,13 @@ pub fn draw_upgrades(
     // Actually, background clear handles bottom items, but top items might draw over header.
     // Redraw header background to cover any scrolling overlap
     draw_rectangle(0.0, 0.0, screen_width(), 70.0, dark::BACKGROUND);
-    draw_text("Building Upgrades", 20.0, 40.0, 32.0, dark::TEXT_BRIGHT);
+    draw_ui_text("Building Upgrades", 20.0, 40.0, 32.0, dark::TEXT_BRIGHT);
     if let Some(data) = player_data {
         let res_text = format!(
             "Hold: {} Gold | {} Lumber | {} Stone",
             data.hold.gold, data.hold.lumber, data.hold.stone
         );
-        draw_text(
+        draw_ui_text(
             &res_text,
             screen_width() - 350.0,
             30.0,
