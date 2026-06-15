@@ -24,3 +24,10 @@ Build a capable adventuring roster that can clear better missions and produce st
 ## Current Scope
 
 Playable roster-management foundation with adventurers, missions, progression, and persistent campaign flow.
+# Practical Future Improvements
+
+- Add typed contract tests between backend, shared models, and client screens for recruit, inventory, market, mission, and skills flows.
+- Centralize item, skill, adventurer, and equipment identifiers in shared data so backend and client cannot silently diverge.
+- Add mission-resolution fixtures for reward, injury, level-up, and inventory-capacity edge cases.
+- Split client screen mutation from network/domain actions so UI panels can be tested with mocked backend responses.
+
